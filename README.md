@@ -42,5 +42,5 @@ Visit your Sourceml host with a browser. You should see the install form.
 
 Set your database connection informations, choose a title for the website and a user name to start with, then click the install button.
 
-If you see a success page, you now have a new (empty) Sourceml installation. Login with your user name to access your sourceml account and add authors, albums and tracks...
+If you see a success page, you now have a new (empty) Sourceml installation. Login with your user name to access your account and add authors, albums and tracks...
 
