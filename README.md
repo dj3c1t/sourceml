@@ -2,7 +2,7 @@
 A PHP/MySQL CMS for music publication
 
 ## description
-Sourceml is a web application for music publication. Install Sourceml on web server, login to your account and publish albums, songs and tracks.
+Sourceml is a web application for music publication. Install Sourceml on a web server, login to your account and publish albums, songs and tracks.
 
 This v3 version of Sourceml, based on [Symfony](https://symfony.com/) 3.4, is coming from the [v2 version of Sourceml](http://gitlab.dj3c1t.com/dj3c1t/sourceml), based on Symfony 2.
 
