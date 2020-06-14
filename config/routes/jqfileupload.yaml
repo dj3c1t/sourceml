@@ -1,0 +1,7 @@
+jq_file_upload_server:
+    path:     /upload/server/{handlerName}/{id}
+    controller: Sourceml\Controller\JQFileUpload\ServerController::handleAction
+
+jq_file_upload_test:
+    path:     /upload/test
+    controller: Sourceml\Controller\JQFileUpload\TestController::indexAction

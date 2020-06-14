@@ -1,0 +1,260 @@
+/* ------------------------------------------------------------- */
+/*                                                   main layout */
+
+html {
+    height: 100%;
+}
+
+body {
+    font-family: Verdana, "DejaVu Sans", "Bitstream Vera Sans", Geneva, sans-serif;
+    color: #333333;
+}
+
+.full-height {
+    height: 100%;
+}
+
+.container-full {
+  margin: 0 auto;
+  width: 100%;
+}
+
+.main-col {
+    padding: 0;
+}
+
+#header {
+    border-bottom: solid 1px #e1e1e1;
+    box-shadow: 0 3px 10px #e5e5e5;
+}
+
+#header .content{
+    padding: 0;
+}
+
+#sidebar {
+    padding: 0 2em 0 0;
+}
+
+#main {
+    height: 100%;
+}
+
+#main .content{
+    padding: 1em;
+}
+
+.row {
+    margin: 0;
+}
+
+/* ------------------------------------------------------------- */
+/*                                                        header */
+
+#header h1 {
+    margin: 0;
+    padding: 0.5em;
+}
+
+#header h1 a {
+    text-decoration: none;
+    color: #333333;
+}
+
+#header h1 a:hover {
+    color: #555555;
+}
+
+#header ul.nav {
+    padding: 1em;
+}
+
+/* ------------------------------------------------------------- */
+/*                                                       sidebar */
+
+#sidebar ul.nav {
+    margin-top: 1em;
+}
+
+#sidebar ul.nav li:first-child a {
+/*    border-top: solid 1px #e5e5e5;*/
+}
+
+#sidebar ul.nav a {
+/*    border-bottom: solid 1px #e5e5e5;*/
+    color: #333333;
+    display: block;
+}
+
+#sidebar ul.nav a:hover {
+    background-color: #f1f1f1;
+}
+
+#sidebar ul.nav li.active a {
+    font-weight: bold;
+}
+
+ul.nav a .glyphicon {
+    float: left;
+    padding-top: 0.1em;
+}
+
+ul.nav a .menu-label {
+    display: block;
+    margin: 0 1em 0 2em;
+    color: #333333;
+}
+
+/* ------------------------------------------------------------- */
+/*                                                         login */
+
+#login_form_container {
+    margin-top: 1em;
+    padding: 2em;
+    border-radius: 5px;
+    box-shadow: 0 3px 10px #e5e5e5;
+    border: solid 1px #c0c0c0;
+}
+
+/* ------------------------------------------------------------- */
+/*                                                  main content */
+
+section header h1 {
+    font-size: 2em;
+    padding: 0.3em 0;
+    margin: 0;
+}
+
+section .main {
+    padding: 1em;
+}
+
+.main_tab {
+    margin-bottom: 3em;
+}
+
+.box {
+    margin-top: 1em;
+    padding: 1em;
+    border-radius: 5px;
+    box-shadow: 0 3px 10px #e5e5e5;
+    border: solid 1px #c0c0c0;
+}
+
+/* ---- listings */
+
+.pagination-infos {
+    line-height: 2.3em;
+    margin-top: 1.5em;
+    font-size: 0.9em;
+    font-style: italic;
+}
+
+.table tbody tr.even {
+    background-color: #f5f5f5;
+}
+
+.table tbody tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* ---- glyphicons */
+
+.glyphicon-remove {
+    color: #990000;
+}
+
+.glyphicon-ok-circle.green {
+    color: #c0c0c0;
+}
+
+.glyphicon-ok-circle.green.active {
+    color: #005500;
+}
+
+.btn .loading {
+    display: none;
+}
+
+.btn .text {
+    padding-left: 1em;
+}
+
+/*
+    Original version: http://www.bootply.com/128062
+    
+    This version adds support for IE 10+ and Firefox.
+*/
+
+.glyphicon-rotate {
+    -animation: spin 2s infinite linear;
+    -ms-animation: spin 2s infinite linear;
+    -webkit-animation: spinw 2s infinite linear;
+    -moz-animation: spinm 2s infinite linear;
+}
+
+@keyframes spin {
+    from { transform: scale(1) rotate(0deg);}
+    to { transform: scale(1) rotate(360deg);}
+}
+  
+@-webkit-keyframes spinw {
+    from { -webkit-transform: rotate(0deg);}
+    to { -webkit-transform: rotate(360deg);}
+}
+
+@-moz-keyframes spinm {
+    from { -moz-transform: rotate(0deg);}
+    to { -moz-transform: rotate(360deg);}
+}
+
+/* ---- messages */
+
+.alert-error {
+  color: #a94442;
+  background-color: #f2dede;
+  border-color: #ebccd1;
+}
+.alert-error hr {
+  border-top-color: #e4b9c0;
+}
+.alert-error .alert-link {
+  color: #843534;
+}
+
+.simple_tag {
+    padding: 4px 9px;
+    font-size: 90%;
+    color: #333333;
+    background-color: #e5e5e5;
+    border-radius: 3px;
+}
+
+.error ul {
+    padding: 0;
+    margin: 0;
+    list-style-type: none;
+}
+
+.error li {
+    padding: 5px 15px;
+    margin-bottom: 20px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    color: #8a6d3b;
+    background-color: #fcf8e3;
+    border-color: #faebcc;
+}
+
+/* ---- infos */
+
+.row.help-content {
+    display: none;
+}
+
+.progressbar .ui-widget-header {
+    border: none;
+    background: #5CB85C;
+    color: #fff;
+    font-weight: bold;
+}

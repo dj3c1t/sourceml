@@ -1,0 +1,15 @@
+{% set route = app.request.attributes.get('_route') %}
+<ul class="nav nav-tabs main_tab">
+
+    <li role="presentation"{% if route == 'sourceml_admin_licence_index' %} class="active"{% endif %}>
+        <a href="{{ path('sourceml_admin_licence_index') }}">
+            Liste des licences
+        </a>
+    </li>
+    <li role="presentation"{% if route == 'sourceml_admin_licence_add' %} class="active"{% endif %}>
+        <a href="{{ path('sourceml_admin_licence_add') }}">
+            Ajouter une licence
+        </a>
+    </li>
+
+</ul>

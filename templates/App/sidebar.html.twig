@@ -1,0 +1,45 @@
+<ul class="nav nav-sidebar">
+    {% for item in menu %}
+    {%     set active = false %}
+    {%     if route == item['route'] %}
+    {%         if item['parameters'] is defined %}
+    {%             if parameters|length > 0 %}
+    {%                 set parameters_match = true %}
+    {%                 for key, value in parameters %}
+    {%                     set parameter_found = false %}
+    {%                     for ikey, ivalue in item['parameters'] %}
+    {%                         if key == ikey %}
+    {%                             set parameter_found = true %}
+    {%                             if ivalue != value %}
+    {%                                 set parameters_match = false %}
+    {%                             endif %}
+    {%                         endif %}
+    {%                     endfor %}
+    {%                     if not parameter_found %}
+    {%                         set parameters_match = false %}
+    {%                     endif %}
+    {%                 endfor %}
+    {%                 if parameters_match %}
+    {%                     set active = true %}
+    {%                 endif %}
+    {%             endif %}
+    {%         else %}
+    {%             if app.request.attributes.get('_route_params')|length == 0 %}
+    {%                 set active = true %}
+    {%             endif %}
+    {%         endif %}
+    {%     endif %}
+    <li{% if active %} class="active"{% endif %}>
+        {% if item['parameters'] is defined %}
+        <a href="{{ path(item['route'], item['parameters']) }}"{% if item['class'] is defined %} class="{{ item['class'] }}"{% endif %}>
+        {% else %}
+        <a href="{{ path(item['route']) }}"{% if item['class'] is defined %} class="{{ item['class'] }}"{% endif %}>
+        {% endif %}
+            {% if item['glyphicon'] is defined %}
+            <span class="glyphicon {{ item['glyphicon'] }}" aria-hidden="true"></span>
+            {% endif %}
+            <span class="menu-label">{{ item['label'] }}</span>
+        </a>
+    </li>
+	{% endfor %}
+</ul>

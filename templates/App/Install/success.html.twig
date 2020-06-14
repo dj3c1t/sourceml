@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block header %}
+<h1>Installation</h1>
+{% endblock %}
+
+{% block main %}
+{{ parent() }}
+
+<div class="row">
+    <div class="col-xs-6 col-xs-offset-3">
+            <a href="{{ app.request.getSchemeAndHttpHost() ~ app.request.getBasePath() }}" class="btn btn-default">Aller sur le site</a>    
+        </form>
+    </div>
+</div>
+
+{% endblock %}

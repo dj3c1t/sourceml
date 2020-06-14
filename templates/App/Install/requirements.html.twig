@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block header %}
+<h1>Installation</h1>
+{% endblock %}
+
+{% block main %}
+{{ parent() }}
+
+<div class="row">
+    <div class="col-xs-10 col-xs-offset-1">
+        <h3>Pre-requis</h3>
+
+        {% if symfonyRequirements.failedRequirements|length > 0 %}
+        <h4>Problemes</h4>
+        <ol>
+        {% for requirement in symfonyRequirements.failedRequirements %}
+            <li>
+                {% autoescape false %}
+                {{ requirement.helpHtml }}
+                {% endautoescape %}
+            </li>
+        {% endfor %}
+        </ol>
+        {% endif %}
+
+        {% if symfonyRequirements.failedRecommendations|length > 0 %}
+        <h4>Recommandations</h4>
+        <ol>
+        {% for recommendation in symfonyRequirements.failedRecommendations %}
+            <li>
+                {% autoescape false %}
+                {{ recommendation.helpHtml }}
+                {% endautoescape %}
+            </li>
+        {% endfor %}
+        </ol>
+        {% endif %}
+
+        {% if symfonyRequirements.hasPhpIniConfigIssue() %}
+        <p>*
+            {% if symfonyRequirements.phpIniConfigPath %}
+                Changes to the <strong>php.ini</strong> file must be done in
+                "<strong>{{ symfonyRequirements.phpIniConfigPath }}</strong>".
+            {% else %}
+                To change settings, create a "<strong>php.ini</strong>" file.
+            {% endif %}
+        </p>
+        {% endif %}
+
+    </div>
+</div>
+
+{% endblock %}

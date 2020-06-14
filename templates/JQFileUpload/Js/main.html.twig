@@ -1,0 +1,217 @@
+<!-- The template to display files available for upload -->
+{% verbatim %}
+<script id="template-upload" type="text/x-tmpl">
+{% for (var i=0, file; file=o.files[i]; i++) { %}
+    <tr class="template-upload fade">
+        <td>
+            <span class="preview"></span>
+        </td>
+        <td>
+            <p class="name">{%=file.name%}</p>
+            <strong class="error text-danger"></strong>
+        </td>
+        <td>
+            <p class="size">En cours...</p>
+            <div class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="progress-bar progress-bar-success" style="width:0%;"></div></div>
+        </td>
+        <td>
+            {% if (!i) { %}
+                <button class="btn btn-warning cancel pull-right">
+                    <i class="glyphicon glyphicon-ban-circle"></i>
+                    <span>Annuler</span>
+                </button>
+            {% } %}
+            {% if (o.options.withAjaxUpload && !i && !o.options.autoUpload) { %}
+                <button class="btn btn-primary start pull-right" style="margin-right: 1em;" disabled>
+                    <i class="glyphicon glyphicon-upload"></i>
+                    <span>Envoyer</span>
+                </button>
+            {% } %}
+        </td>
+    </tr>
+{% } %}
+</script>
+<!-- The template to display files available for download -->
+<script id="template-download" type="text/x-tmpl">
+{% for (var i=0, file; file=o.files[i]; i++) { %}
+    <tr class="template-download fade">
+        <td>
+            <span class="preview">
+                {% if (file.thumbnailUrl) { %}
+                    <a href="{%=file.url%}" title="{%=file.name%}" download="{%=file.name%}" data-gallery><img src="{%=file.thumbnailUrl%}"></a>
+                {% } else { %}
+                    <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" style="width: 80px; height: 1px;" />
+                {% } %}
+            </span>
+        </td>
+        <td>
+            <p class="name">
+                {% if (file.url) { %}
+                    <a href="{%=file.url%}" title="{%=file.name%}" download="{%=file.name%}" {%=file.thumbnailUrl?'data-gallery':''%}>{%=file.name%}</a>
+                {% } else { %}
+                    <span>{%=file.name%}</span>
+                {% } %}
+            </p>
+            {% if (file.error) { %}
+                <div><span class="label label-danger">Error</span> {%=file.error%}</div>
+            {% } %}
+        </td>
+        <td>
+            <span class="size">{%=o.formatFileSize(file.size)%}</span>
+        </td>
+        <td>
+            {% if (file.deleteUrl) { %}
+                <button class="btn btn-danger delete pull-right" data-type="{%=file.deleteType%}" data-url="{%=file.deleteUrl%}"{% if (file.deleteWithCredentials) { %} data-xhr-fields='{"withCredentials":true}'{% } %}>
+                    <i class="glyphicon glyphicon-trash"></i>
+                    <span>Effacer</span>
+                </button>
+                <!-- input type="checkbox" name="delete" value="1" class="toggle" -->
+            {% } else { %}
+                <button class="btn btn-warning cancel pull-right">
+                    <i class="glyphicon glyphicon-ban-circle"></i>
+                    <span>Annuler</span>
+                </button>
+            {% } %}
+        </td>
+    </tr>
+{% } %}
+</script>
+{% endverbatim %}
+
+<!-- The blueimp Gallery widget -->
+<div id="blueimp-gallery" class="blueimp-gallery blueimp-gallery-controls" data-filter=":even">
+    <div class="slides"></div>
+    <h3 class="title"></h3>
+    <a class="prev">‹</a>
+    <a class="next">›</a>
+    <a class="close">×</a>
+    <a class="play-pause"></a>
+    <ol class="indicator"></ol>
+</div>
+
+<script>
+
+    function check_single_upload(formId) {
+        if($("#" + formId + " tbody.files tr").size() >= 1) {
+            $("#" + formId + " .fileupload-buttonbar").hide();
+        }
+        else {
+            $("#" + formId + " .fileupload-buttonbar").show();
+        }
+    }
+
+    function init_fileupload(formId, handlerName, objectId, multiple, withAjaxUpload) {
+        var upload_server_url = "{{ path('jq_file_upload_server', {handlerName: 'AAAA', id: 'BBBB'}) }}";
+        upload_server_url = upload_server_url.replace('AAAA', handlerName);
+        upload_server_url = upload_server_url.replace('BBBB', objectId);
+
+        $('#' + formId).fileupload({
+            url: upload_server_url,
+            sequentialUploads: true,
+            withAjaxUpload: withAjaxUpload
+        });
+        if(!multiple) {
+            $('#' + formId)
+                .bind('fileuploadadded', function (e, data) {
+                    check_single_upload(formId);
+                })
+                .bind('fileuploaddestroyed', function (e, data) {
+                    check_single_upload(formId);
+                })
+                .bind('fileuploadcompleted', function (e, data) {
+                    check_single_upload(formId);
+                })
+                .bind('fileuploadfailed', function (e, data) {
+                    check_single_upload(formId);
+                })
+        }
+        if(withAjaxUpload) {
+            // Load existing files:
+            $('#' + formId).addClass('fileupload-processing');
+            $.ajax({
+                url: $('#' + formId).fileupload('option', 'url'),
+                dataType: 'json',
+                context: $('#' + formId)[0]
+            }).always(function () {
+                $(this).removeClass('fileupload-processing');
+            }).done(function (result) {
+                $(this).fileupload('option', 'done')
+                    .call(this, $.Event('done'), {result: result});
+            });
+        }
+        else {
+            $('#' + formId)
+                .bind('fileuploadsubmit', function (e, data) {
+                    return withAjaxUpload;
+                })
+
+        }
+    }
+
+    function humanFileSize(bytes) {
+        if(bytes == 0) {
+          return "0.00 B";
+        }
+        var e = Math.floor(Math.log(bytes) / Math.log(1024));
+        return (bytes / Math.pow(1024, e)).toFixed(2) + ' ' + ' KMGTP'.charAt(e) + 'B';
+    }
+
+    function setPreview(inputDiv) {
+        input = $(inputDiv).find(".btn-file .input-wrapper input").get(0);
+        if(input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $(inputDiv).find(".btn-file").css("display", "none");
+                $(inputDiv).find(".fade.in").fadeIn();
+                $(inputDiv).find(".preview").html(
+                    "<img alt=\"preview\" />"
+                );
+                $(inputDiv).find(".preview img").attr(
+                    "src",
+                    e.target.result
+                );
+                $(inputDiv).find(".name").html(input.files[0].name);
+                $(inputDiv).find(".size").html(humanFileSize(input.files[0].size));
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+$(document).ready(
+    function() {
+
+        if(typeof qjfu_fileupload_forms !== 'undefined') {
+            for(var i in qjfu_fileupload_forms) {
+                init_fileupload(
+                    'fileupload' + i,
+                    qjfu_fileupload_forms[i]['handler'],
+                    qjfu_fileupload_forms[i]['id'],
+                    qjfu_fileupload_forms[i]['multiple'],
+                    qjfu_fileupload_forms[i]['withAjaxUpload']
+                );
+            }
+        }
+
+        $(".qjfu-file-input").change(
+            function() {
+                setPreview(this);
+            }
+        );
+
+        $(".qjfu-file-input .btn.delete").click(
+            function() {
+                var qjfu_file_input = $(this).parents(".qjfu-file-input");
+                qjfu_file_input.find(".fade.in").hide();
+                qjfu_file_input.find(".input-wrapper").html(
+                      "<input name=\""
+                    + qjfu_file_input.find(".input-wrapper").attr("data-name")
+                    + "\" type=\"file\" />"
+                );
+                qjfu_file_input.find(".btn-file").css("display", "inline");
+            }
+        );
+
+    }
+);
+
+</script>

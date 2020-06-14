@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+{% block header %}
+{% endblock %}
+
+{% block main %}
+{{ parent() }}
+
+{% set parametersFile = 'app/config/parameters.yml' %}
+
+<div class="row">
+    <div class="col-xs-10 col-xs-offset-1">
+        {% if notWritable|length > 0 %}
+        <div class="alert alert-warning">
+            Certains fichiers ou dossiers ne sont pas accessibles en écriture
+        </div>
+        <p>Vérifiez que Php a le droit d'écrire dans les fichiers ou les dossiers suivant :</p>
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <ul>
+                    {% set parametersFileIsUnwritable = false %}
+                    {% for file in notWritable %}
+                    {% if file == parametersFile %}
+                    {% set parametersFileIsUnwritable = true %}
+                    {% endif %}
+                    <li>{{ file }}{% if file == parametersFile %} (*){% endif %}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% if parametersFileIsUnwritable %}
+            <div class="panel-footer">
+                <p>
+                    (*) le fichier <strong>{{ parametersFile }}</strong>
+                    doit être accessible en écriture au moins le temps de l'installation.
+                </p>
+            </div>
+            {% endif %}
+        </div>
+        <p>
+            <a class="btn btn-default pull-right" href="{{ path('install_notwritable') }}">
+                Rechargez cette page pour vérifier à nouveau
+            </a>
+        </p>
+        {% else %}
+        <div class="alert alert-success">
+            Les droits en écriture sur les fichiers les dossiers semblent corrects
+        </div>
+        <p>
+            <a class="btn btn-default pull-right" href="{{ path('homepage') }}">
+                Aller sur le site
+            </a>
+        </p>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}

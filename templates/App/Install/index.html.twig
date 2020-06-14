@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% block header %}
+<h1>Installation</h1>
+{% endblock %}
+
+{% block main %}
+{{ parent() }}
+
+<div class="row">
+    <div class="box col-xs-6 col-xs-offset-3">
+        <form action="{{ path('install') }}" method="post">
+            <h3>Connexion à la base de données</h3>
+            <div class="form-group">
+                <label for="database_host">Serveur</label>
+                <input class="form-control" type="text" id="database_host" name="database_host" value="{{ parameters['database_host'] }}" />
+            </div>
+            <div class="form-group">
+                <label for="database_name">Nom de la base</label>
+                <input class="form-control" type="text" id="database_name" name="database_name" value="{{ parameters['database_name'] }}" />
+            </div>
+            <div class="form-group">
+                <label for="database_user">Login</label>
+                <input class="form-control" type="text" id="database_user" name="database_user" value="{{ parameters['database_user'] }}" />
+            </div>
+            <div class="form-group">
+                <label for="database_pass">Mot de passe</label>
+                <input class="form-control" type="password" id="database_pass" name="database_pass" value="{{ parameters['database_pass'] }}" />
+            </div>
+            <h3>Titre du site</h3>
+            <div class="form-group">
+                <input class="form-control" type="text" id="site_title" name="site_title" value="{{ parameters['site_title'] }}" />
+            </div>
+            <h3>Nouvel utilisateur (admin)</h3>
+            <div class="form-group">
+                <label for="admin_login">Login</label>
+                <input class="form-control" type="text" id="admin_login" name="admin_login" value="{{ parameters['admin_login'] }}" />
+            </div>
+            <div class="form-group">
+                <label for="admin_email">Email</label>
+                <input class="form-control" type="text" id="admin_email" name="admin_email" value="{{ parameters['admin_email'] }}" />
+            </div>
+            <div class="form-group">
+                <label for="admin_pass">Mot de passe</label>
+                <input class="form-control" type="password" id="admin_pass" name="admin_pass" value="{{ parameters['admin_pass'] }}" />
+            </div>
+            <button type="submit" class="btn btn-primary">Installer</button>    
+        </form>
+    </div>
+</div>
+
+{% endblock %}

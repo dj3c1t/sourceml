@@ -1,0 +1,86 @@
+sourceml_menus:
+    sourceml:
+        admin:
+            routes:
+                - sourceml_admin_config
+                - sourceml_admin_licence_index
+                - sourceml_admin_licence_add
+                - sourceml_admin_licence_edit
+            items:
+                sourceml_config:
+                    route: sourceml_admin_config
+                    label: SourceML
+                    glyphicon: glyphicon-edit
+                sourceml_licences:
+                    route: sourceml_admin_licence_index
+                    label: Licences
+                    glyphicon: glyphicon-edit
+        account:
+            routes:
+                - account_author_index
+                - account_author_add
+                - account_author_edit
+                - account_source_index
+                - account_source_add
+                - account_source_add_reference
+                - account_source_edit
+                - account_source_author_new
+            items:
+                author_index:
+                    route: account_author_index
+                    label: Auteurs
+                    glyphicon: glyphicon-edit
+                album_index:
+                    route: account_source_index
+                    parameters: {sourceType: 'album'}
+                    label: Albums
+                    glyphicon: glyphicon-edit
+                track_index:
+                    route: account_source_index
+                    parameters: {sourceType: 'track'}
+                    label: Morceaux
+                    glyphicon: glyphicon-edit
+                source_index:
+                    route: account_source_index
+                    parameters: {sourceType: 'source'}
+                    label: Sources
+                    glyphicon: glyphicon-edit
+                new_sources:
+                    service: sourceml.menus
+                    method: newSources
+        sources:
+            routes:
+                - author_index
+                - author_view
+                - source_index
+                - source_view
+            items:
+                authors:
+                    route: author_index
+                    label: Auteurs
+                    glyphicon: glyphicon-triangle-right
+                albums:
+                    route: source_index
+                    parameters: {sourceType: 'album'}
+                    label: Albums
+                    glyphicon: glyphicon-triangle-right
+                tracks:
+                    route: source_index
+                    parameters: {sourceType: 'track'}
+                    label: Morceaux
+                    glyphicon: glyphicon-triangle-right
+                sources:
+                    route: source_index
+                    parameters: {sourceType: 'source'}
+                    label: Sources
+                    glyphicon: glyphicon-triangle-right
+                toggle_auto_play_next_track:
+                    service: sourceml.menus
+                    method: toggleAutoPlayNextTrackButton
+
+        header:
+            routes:
+            items:
+                sourceml:
+                    service: sourceml.menus
+                    method: getSourceMLMainLinks

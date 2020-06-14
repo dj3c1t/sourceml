@@ -1,0 +1,115 @@
+twig:
+    globals:
+        sourceml: "@sourceml.source_manager"
+
+services:
+
+    jq_file_upload.handler.sourceml_author_logo:
+        public: true
+        class: Sourceml\Service\Sources\UploadHandler\AuthorLogo
+        arguments: ['@service_container', 'jpg,jpeg,png,gif']
+
+    jq_file_upload.handler.sourceml_source_image:
+        public: true
+        class: Sourceml\Service\Sources\UploadHandler\SourceImage
+        arguments: ['@service_container', 'jpg,jpeg,png,gif']
+
+    jq_file_upload.handler.sourceml_source_document:
+        public: true
+        class: Sourceml\Service\Sources\UploadHandler\SourceDocument
+        arguments: ['@service_container', 'jpg,jpeg,png,gif,pdf,txt,wav,flac,ogg,mp3,mkv,mp4,avi,zip,rar,gz,tar']
+
+    jq_file_upload.handler.sourceml_licence_logo:
+        public: true
+        class: Sourceml\Service\Sources\UploadHandler\LicenceLogo
+        arguments: ['@service_container', 'jpg,jpeg,png,gif']
+
+    sourceml.source_manager:
+        public: true
+        class: Sourceml\Service\Sources\SourceManager
+        arguments: ['@service_container']
+
+    sourceml.source_xml_parser:
+        public: true
+        class: Sourceml\Service\Sources\SourceXMLParser
+        arguments: ['@service_container']
+
+    sourceml.source_cache:
+        public: true
+        class: Sourceml\Service\Sources\SourceCache
+        arguments: ['@service_container']
+
+    sourceml.config:
+        public: true
+        class: Sourceml\Service\Sources\SourceMLConfig
+        arguments: ['@service_container']
+
+    sourceml.source_cache_listener:
+        class: Sourceml\Service\Sources\Listener\SourceCacheListener
+        tags:
+            - { name: doctrine.event_listener, event: postPersist }
+            - { name: doctrine.event_listener, event: postUpdate }
+            - { name: doctrine.event_listener, event: postRemove }
+        arguments: ['@service_container']
+
+    sourceml.loader_listener:
+        class: Sourceml\Service\Sources\Listener\LoaderListener
+        tags:
+            - { name: doctrine.event_listener, event: postLoad }
+        arguments: ['@service_container']
+
+    sourceml.menus:
+        public: true
+        class: Sourceml\Service\Sources\SourceMLMenus
+        arguments: ['@service_container']
+
+    sourceml.waveform:
+        public: true
+        class: Sourceml\Service\Sources\Waveform
+
+    sourceml.source_waveform:
+        public: true
+        class: Sourceml\Service\Sources\SourceWaveform
+        arguments: ['@service_container']
+
+    sourceml.import_previous_version:
+        public: true
+        class: Sourceml\Service\Sources\ImportPreviousVersion
+        arguments: ['@service_container']
+
+stfalcon_tinymce:
+    include_jquery: false
+    tinymce_jquery: true
+    selector : ".tinymce"
+    language: '%kernel.default_locale%'
+    theme:
+        # Simple theme: same as default theme
+        simple: ~
+        # Advanced theme with almost all enabled plugins
+        advanced:
+             plugins:
+                 - "advlist autolink lists link image charmap print preview hr anchor pagebreak"
+                 - "searchreplace wordcount visualblocks visualchars code fullscreen"
+                 - "insertdatetime media nonbreaking save table contextmenu directionality"
+                 - "emoticons template paste textcolor"
+             toolbar1: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image"
+             toolbar2: "print preview media | forecolor backcolor emoticons | stfalcon | example"
+             image_advtab: true
+             templates:
+                 - {title: 'Test template 1', content: 'Test 1'}
+                 - {title: 'Test template 2', content: 'Test 2'}
+        # BBCode tag compatible theme (see http://www.bbcode.org/reference.php)
+        bbcode:
+             plugins: ["bbcode, code, link, preview"]
+             menubar: false
+             toolbar1: "bold,italic,underline,undo,redo,link,unlink,removeformat,cleanup,code,preview"
+        basic:
+             menubar: false
+             plugins:
+                 - "advlist autolink lists link image charmap print preview hr anchor pagebreak"
+                 - "searchreplace wordcount visualblocks visualchars code fullscreen"
+                 - "insertdatetime media nonbreaking save table contextmenu directionality"
+                 - "paste textcolor"
+             toolbar1: "styleselect | forecolor backcolor | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image"
+             toolbar2: ""
+             image_advtab: true

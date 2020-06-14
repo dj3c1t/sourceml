@@ -1,0 +1,139 @@
+{% extends 'Sources/base.html.twig' %}
+
+{% block content_header %}
+{{ parent() }}
+
+<h1 class="ariane">
+    {{ source.title }}
+</h1>
+
+{% set composition = source.composition %}
+{% if composition is not null %}
+<ul class="derivation_sources">
+    <li>
+        {{ ('sourceml.source_type.' ~ composition.sourceType.name)|trans }} &raquo;
+        <a href="{{ composition.link }}">
+            {{ composition.title }}
+        </a>
+    </li>
+</ul>
+{% endif %}
+
+{% if source.derivationSources|length > 0 %}
+<ul class="derivation_sources">
+{% for derivationSource in source.derivationSources %}
+    <li>
+        dérive de &raquo;
+        <a href="{{ derivationSource.link }}">
+            {{ derivationSource.title }}
+        </a>
+    </li>
+{% endfor %}
+</ul>
+{% endif %}
+
+{% endblock %}
+
+{% block main %}
+{{ parent() }}
+
+<div class="source_view row">
+
+    <div class="source_view_authors">
+        <ul>
+            {% for sourceAuthor in source.authors %}
+            {%
+                if (
+                    sourceAuthor.isValid
+                    and (
+                           sourceAuthor.authorRole is null
+                        or sourceAuthor.authorRole.name == 'admin'
+                        or sourceAuthor.authorRole.name == 'editor'
+                    )
+                )
+            %}
+            {% set author = sourceAuthor.author %}
+            <li class="author">
+                {% if author.url %}
+                <a class="author_box" href="{{ author.url }}">
+                {% else %}
+                <div class="author_box">
+                {% endif %}
+                    {%
+                        if author.image is not null
+                        and author.image.thumbnail is not null
+                     %}
+                    <img class="logo" src="{{ author.image.thumbnail.url }}" />
+                    {% endif %}
+                    <span class="name">
+                        {{ author.name }}
+                    </span>
+                {% if author.url %}
+                </a>
+                {% else %}
+                </div>
+                {% endif %}
+            </li>
+            {% endif %}
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div class="source_view_content">
+
+{#
+        {% set previousAndNext = sourceml.getPreviousAndNext(source) %}
+        {% if previousAndNext['previous'] is not null or previousAndNext['next'] is not null %}
+        <nav class="col-md-12 source_navigation">
+            <div class="row prev_next">
+                {% if previousAndNext['previous'] is not null %}
+                <div class="col-md-6">
+                    <a class="btn btn-default previous_source" href="{{ sourceml.getSourceUrl(previousAndNext['previous']) }}">
+                        <i class="glyphicon glyphicon-backward"></i>
+                        <span class="title">{{ previousAndNext['previous'].title }}</span>
+                    </a>
+                </div>
+                {% endif %}
+                {% if previousAndNext['next'] is not null %}
+                <div class="col-md-6{% if previousAndNext['previous'] is null %} col-md-offset-6{% endif %}  text-right">
+                    <a class="btn btn-default next_source" href="{{ sourceml.getSourceUrl(previousAndNext['next']) }}">
+                        <span class="title">{{ previousAndNext['next'].title }}</span>
+                        <i class="glyphicon glyphicon-forward"></i>
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+        </nav>
+        {% endif %}
+#}
+
+        {% if source.image is not null %}
+        <div class="source_view_image">
+            <img src="{{ source.image.url }}" />
+        </div>
+        {% endif %}
+        
+        {{
+            include(
+                'Sources/Source/Source/source.html.twig',
+                {
+                    source: source,
+                    layout: 'view'
+                }
+            )
+        }}
+
+        {% set source_description = source.getInfo('description') %}
+        {% if source_description is not null %}
+        <div class="description">
+        {% autoescape false %}
+        {{ source_description }}
+        {% endautoescape %}
+        </div>
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% endblock %}

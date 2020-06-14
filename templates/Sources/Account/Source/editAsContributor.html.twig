@@ -1,0 +1,68 @@
+{% extends 'Sources/base.html.twig' %}
+
+{% block head %}
+{{ parent() }}
+{{ include('JQFileUpload/head.html.twig') }}
+{% endblock %}
+
+{% block content_header %}
+{{ parent() }}
+<h1>{{ ('sourceml.edit_title.' ~ sourceType)|trans({sourceName: source.title}) }}</h1>
+{% endblock %}
+
+{% block main %}
+{{ parent() }}
+
+{{ include('Sources/Account/Source/menu.html.twig', {sourceType: sourceType}) }}
+
+<div class="row">
+    <div class="alert alert-info">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        Vous avez un statut <strong>contributeur</strong> sur cette source.
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xs-12">
+        <div class="form-group">
+            <label>Auteurs</label>
+            <div class="authors">
+                {% for sourceAuthor in source.authors %}
+                <div class="author row box">
+                    <div class="col-xs-4 name">
+                        {{ sourceAuthor.author.name }}
+                    </div>
+                    <div class="col-xs-4 role">
+                        {{ sourceAuthor.authorRole.name }}
+                    </div>
+                    <div class="col-xs-2 active text-center">
+                        <span class="glyphicon glyphicon-ok-circle green{%
+                            if sourceAuthor.isValid
+                        %} active{% endif %}" aria-hidden="true"></span>
+                    </div>
+                    {%
+                        if sourceml.userCan('admin', source)
+                        or sourceAuthor.author.user.id == app.user.id
+                    %}
+                    <div class="col-xs-2 admin text-center">
+                        <a class="btn btn-default bb_confirm"
+                           data-message="Enlever cet auteur ?"
+                           href="{{ path('account_source_author_delete', {'sourceAuthor': sourceAuthor.id}) }}">
+                            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                        </a>
+                    </div>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block body_end %}
+{{ parent() }}
+{{ include('JQFileUpload/body_end.html.twig') }}
+{{ tinymce_init() }}
+{% endblock %}

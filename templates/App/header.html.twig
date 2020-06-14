@@ -1,0 +1,67 @@
+<ul class="nav nav-pills pull-right">
+
+    {% if app.user %}
+
+    <li role="presentation" class="dropdown">
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+            <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+            <span class="menu-label">Bienvenue {{ app.user.username }} <span class="caret"></span></span>
+	    </a>
+        <ul class="dropdown-menu">
+            {% if is_granted('ROLE_USER') %}
+            <li>
+                <a href="{{ path('account') }}">
+                    <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+                    <span class="menu-label">Compte</span>
+                </a>
+            </li>
+            {% endif %}
+            {% if is_granted('ROLE_ADMIN') %}
+            <li>
+                <a href="{{ path('admin') }}">
+                    <span class="glyphicon glyphicon-wrench" aria-hidden="true"></span>
+                    <span class="menu-label">Admin</span>
+                </a>
+            </li>
+            {% endif %}
+            <li role="separator" class="divider"></li>
+            <li>
+                <a href="{{ path('logout') }}">
+                    <span class="glyphicon glyphicon-log-out" aria-hidden="true"></span>
+                    <span class="menu-label">Déconnexion</span>
+                </a>
+            </li>
+        </ul>
+    </li>
+
+{% else %}
+
+    <li>
+      <a href="{{ path('login') }}" role="button">
+          <span class="glyphicon glyphicon-log-in" aria-hidden="true"></span>
+          <span class="menu-label">Connexion</span>
+	  </a>
+    </li>
+
+
+{% endif %}
+
+</ul>
+<h1><a href="{{ path('homepage') }}">{{ site_title }}</a></h1>
+
+<div class="row">
+    <div class="col-md-12">
+        {% for item in menu %}
+        {% if item['parameters'] is defined %}
+        <a class="btn btn-default" href="{{ path(item['route'], item['parameters']) }}"{% if item['class'] is defined %} class="{{ item['class'] }}"{% endif %}>
+        {% else %}
+        <a class="btn btn-default" href="{{ path(item['route']) }}"{% if item['class'] is defined %} class="{{ item['class'] }}"{% endif %}>
+        {% endif %}
+            {% if item['glyphicon'] is defined %}
+            <span class="glyphicon {{ item['glyphicon'] }}" aria-hidden="true"></span>
+            {% endif %}
+            <span class="menu-label">{{ item['label'] }}</span>
+        </a>
+        {% endfor %}
+    </div>
+</div>

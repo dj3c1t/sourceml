@@ -1,0 +1,68 @@
+{% extends 'Sources/base.html.twig' %}
+
+{% block head %}
+{{ parent() }}
+{{ include('JQFileUpload/head.html.twig') }}
+{% endblock %}
+
+{% block content_header %}
+{{ parent() }}
+<h1>{{ ('sourceml.add_title.' ~ sourceType)|trans }}</h1>
+{% endblock %}
+
+{% block main %}
+{{ parent() }}
+
+{{ include('Sources/Account/Source/menu.html.twig', {sourceType: sourceType}) }}
+
+<div class="row">
+    <div class="col-xs-12">
+        {{ form_start(form, {attr: {novalidate: 'novalidate', enctype: "multipart/form-data"}}) }}
+        <div class="form-group">
+            <label>Image</label>
+            {{ include('JQFileUpload/Form/singleUpload.html.twig', {
+                inputName: 'image'
+            }) }}
+        </div>
+        <div class="error">{{ form_errors(form) }}</div>
+        <div class="form-group">
+            {{ form_label(form.author) }}
+            <div class="error">{{ form_errors(form.author) }}</div>
+            {{ form_widget(form.author, {attr: {class: 'form-control', style: 'width: auto'}}) }}
+        </div>
+        {% if form.offsetExists('composition') %}
+        <div class="form-group">
+            {{ form_label(form.composition) }}
+            <div class="error">{{ form_errors(form.composition) }}</div>
+            {{ form_widget(form.composition, {attr: {class: 'form-control', style: 'width: auto'}}) }}
+        </div>
+        {% endif %}
+        <div class="form-group">
+            {{ form_label(form.title) }}
+            <div class="error">{{ form_errors(form.title) }}</div>
+            {{ form_widget(form.title, {attr: {class: 'form-control'}}) }}
+        </div>
+        {% if form.offsetExists('licence') %}
+        <div class="form-group">
+            {{ form_label(form.licence) }}
+            <div class="error">{{ form_errors(form.licence) }}</div>
+            {{ form_widget(form.licence, {attr: {class: 'form-control', style: 'width: auto'}}) }}
+        </div>
+        {% endif %}
+        <div class="form-group">
+            {{ form_label(form.description) }}
+            <div class="error">{{ form_errors(form.description) }}</div>
+            {{ form_widget(form.description, {attr: {class: 'tinymce', 'data-theme': 'basic'}}) }}
+        </div>
+        <button type="submit" class="btn btn-primary pull-right">Enregistrer</button>
+        {{ form_end(form) }}
+    </div>
+</div>
+
+{% endblock %}
+
+{% block body_end %}
+{{ parent() }}
+{{ include('JQFileUpload/body_end.html.twig') }}
+{{ tinymce_init() }}
+{% endblock %}

@@ -1,0 +1,85 @@
+{% set withAjaxUpload = inputName is not defined %}
+{% if withAjaxUpload %}
+
+<form class="fileupload_form" id="fileupload_tmp_id" action="{{ path('jq_file_upload_server', {handlerName: handler, id: id}) }}" method="POST" enctype="multipart/form-data">
+    <!-- Redirect browsers with JavaScript disabled to the origin page -->
+    <noscript><input type="hidden" name="redirect" value="https://blueimp.github.io/jQuery-File-Upload/"></noscript>
+    <!-- The fileupload-buttonbar contains buttons to add/delete files and start/cancel the upload -->
+    <div class="row fileupload-buttonbar">
+        <div class="col-lg-7">
+            <!-- The fileinput-button span is used to style the file input field as button -->
+            <span class="btn btn-success fileinput-button">
+                <i class="glyphicon glyphicon-plus"></i>
+                <span>Choisir un fichier</span>
+                <input type="file" name="files">
+            </span>
+            <!-- The global file processing state -->
+            <span class="fileupload-process"></span>
+        </div>
+        <!-- The global progress state -->
+        <div class="col-lg-5 fileupload-progress fade">
+            <!-- The global progress bar -->
+            <div class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+                <div class="progress-bar progress-bar-success" style="width:0%;"></div>
+            </div>
+            <!-- The extended global progress state -->
+            <div class="progress-extended">&nbsp;</div>
+        </div>
+    </div>
+    <!-- The table listing the files available for upload/download -->
+    <table role="presentation" class="table table-striped"><tbody class="files"></tbody></table>
+</form>
+<script>
+if(typeof qjfu_fileupload_index === 'undefined') {
+    var qjfu_fileupload_index = 0;
+}
+qjfu_fileupload_index++;
+document.getElementById("fileupload_tmp_id").id = "fileupload" + qjfu_fileupload_index;
+if(typeof qjfu_fileupload_forms === 'undefined') {
+    var qjfu_fileupload_forms = {};
+}
+qjfu_fileupload_forms[qjfu_fileupload_index] = {
+    handler: '{{ handler }}',
+    id: '{{ id }}',
+    multiple: false,
+    withAjaxUpload: {% if withAjaxUpload %}true{% else %}false{% endif %}
+}
+</script>
+
+{% else %}
+
+<div class="row">
+    <div class="col-xs-12">
+        <div class="qjfu-file-input">
+            <span class="btn btn-success btn-file">
+                <i class="glyphicon glyphicon-plus"></i> Choisir un fichier
+                <span class="input-wrapper" data-name="{{ inputName }}">
+                    <input name="{{ inputName }}" type="file" />
+                </span>
+            </span>
+            <table role="presentation" class="table table-striped">
+                <tbody class="files">
+                    <tr class="template-download fade in">
+                        <td>
+                            <span class="preview"></span>
+                        </td>
+                        <td>
+                            <p class="name"></p>
+                        </td>
+                        <td>
+                            <span class="size"></span>
+                        </td>
+                        <td>
+                            <span class="btn btn-danger delete">
+                                <i class="glyphicon glyphicon-trash"></i>
+                                <span>Effacer</span>
+                            </span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endif %}

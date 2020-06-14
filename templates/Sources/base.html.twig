@@ -1,0 +1,188 @@
+{% extends 'base.html.twig' %}
+
+{% block head %}
+{{ parent() }}
+<link rel="stylesheet" href="{{ asset('sources/css/sources.css') }}">
+<link rel="stylesheet" href="{{ asset('sources/css/admin.css') }}">
+<link rel="stylesheet" href="{{ asset('sources/jaudio-player/jaudio-player.1.1.css') }}">
+{% endblock %}
+
+{% block body_end %}
+{{ parent() }}
+<script src="{{ asset('sources/jaudio-player/jaudio-player.1.1.js') }}"></script>
+<script>
+$(document).ready(
+    function() {
+
+        function init_players(container) {
+            container.find("audio.jap").jaudioPlayer({
+                "waveform_class": "waveform",
+                "auto_play_next_track": {{ app.session.get('auto_play_next_track', false) ? 'true' : 'false' }},
+            });
+            $(window).resize(
+                function() {
+                    container.find("audio.jap").jaudioPlayer("resize");
+                }
+            );
+        }
+
+        function init_sources_buttons(container) {
+
+            container.find(".toggle_composition_sources").click(
+                function() {
+                    var source_id = $(this).data("source-id");
+                    var contentDiv = $("#source_" + source_id + " .composition_sources .loaded").first();
+                    if(contentDiv.html()) {
+                        contentDiv.slideUp(
+                            400,
+                            function() {
+                                contentDiv.html("");
+                            }
+                        );
+                        return;
+                    }
+                    var toggle_button = $(this);
+                    var loading = toggle_button.parents(".composition_sources").first().find(".loading");
+                    loading.show();
+                    var url = "{{ path('source_composition_sources', {source: 1111}) }}";
+                    url = url.replace("1111", source_id);
+                    $.get(
+                        url,
+                        function(response) {
+                            loading.hide();
+                            if(response["error"]) {
+                                app_message("danger", toggle_button.closest(".source"), response["error"]);
+                                return;
+                            }
+                            contentDiv.hide();
+                            contentDiv.html(response["data"]["source_list"]);
+                            contentDiv.slideDown();
+                            init_players(contentDiv);
+                            init_sources_buttons(contentDiv);
+                        }
+                    );
+                }
+            );
+
+            container.find(".toggle_source_derivations").click(
+                function() {
+                    var source_id = $(this).data("source-id");
+                    var contentDiv = $("#source_" + source_id + " .source_derivations .loaded").first();
+                    if(contentDiv.html()) {
+                        contentDiv.slideUp(
+                            400,
+                            function() {
+                                contentDiv.html("");
+                            }
+                        );
+                        return;
+                    }
+                    var toggle_button = $(this);
+                    var loading = toggle_button.parents(".source_derivations").first().find(".loading");
+                    loading.show();
+                    var url = "{{ path('source_source_derivations', {source: 1111}) }}";
+                    url = url.replace("1111", source_id);
+                    $.get(
+                        url,
+                        function(response) {
+                            loading.hide();
+                            if(response["error"]) {
+                                app_message("danger", toggle_button.closest(".source"), response["error"]);
+                                return;
+                            }
+                            contentDiv.hide();
+                            contentDiv.html(response["data"]["source_list"]);
+                            contentDiv.slideDown();
+                            init_players(contentDiv);
+                            init_sources_buttons(contentDiv);
+                        }
+                    );
+                }
+            );
+
+        }
+
+        init_players($("#main"));
+
+        init_sources_buttons($("#main"));
+
+        {%  if app.request.get('_route') == 'source_view'
+            and source is defined
+            and source.sourceType.name == 'album'
+        %}
+        $(".toggle_composition_sources").first().trigger( "click" );
+        {% endif %}
+
+        $(".toggle_source_xml_view").click(
+            function() {
+                var xmlPre = $(this).parents(".source_xml_view").first().find("pre");
+                xmlPre.slideToggle();
+            }
+        );
+
+        $(".toggle_auto_play_next_track").each(
+            function() {
+                var menu_icon = $(this).find(".glyphicon");
+                menu_icon.removeClass("green");
+                menu_icon.removeClass("active");
+                menu_icon.addClass("green");
+                {% if app.session.get('auto_play_next_track', false) %}
+                menu_icon.addClass("active");
+                {% endif %}
+            }
+        );
+
+        $(".toggle_auto_play_next_track").click(
+            function() {
+                var toggle_button = $(this);
+                var menu_icon = toggle_button.find(".glyphicon");
+                $.get(
+                    $(this).attr("href"),
+                    function(response) {
+                        if(response["error"]) {
+                            alert(response["error"]);
+                            return false;
+                        }
+                        $("audio.jap").jaudioPlayer(
+                            "set_option",
+                            "auto_play_next_track",
+                            response["data"] == 'true' ? true : false
+                        );
+                        menu_icon.removeClass("green");
+                        menu_icon.removeClass("active");
+                        menu_icon.addClass("green");
+                        if(response["data"] == 'true') {
+                            menu_icon.addClass("active");
+                        }
+                    }
+                );
+                return false;
+            }
+        );
+
+        {% if sourceml.getAutoplay() %}
+        var players = $("audio.jap");
+        if(players.length > 0) {
+            players.each(
+                function() {
+                    $(this).bind(
+                        'ended', function() {
+                            if($("audio.jap").length == 1) {
+                                var next_link = $("a.next_source");
+                                if(next_link.length > 0) {
+                                    document.location.href = next_link.attr("href");
+                                }
+                            }
+                        }
+                    );
+                }
+            );
+            var firstPlayer = players.first();
+            firstPlayer.jaudioPlayer("play", firstPlayer);
+        }
+        {% endif %}
+
+    }
+);
+</script>
+{% endblock %}

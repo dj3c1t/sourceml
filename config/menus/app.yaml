@@ -1,0 +1,28 @@
+sourceml_menus:
+    app:
+        admin:
+            routes:
+                - admin
+                - admin_configuration
+                - admin_user_list
+                - admin_user_add
+                - admin_user_edit
+                - admin_user_delete
+            items:
+                config:
+                    route: admin_configuration
+                    label: Configuration
+                    glyphicon: glyphicon-edit
+                users:
+                    route: admin_user_list
+                    label: Utilisateurs
+                    glyphicon: glyphicon-user
+        account:
+            routes:
+                - account
+                - account_configuration
+            items:
+                config:
+                    route: account_configuration
+                    label: Compte
+                    glyphicon: glyphicon-user

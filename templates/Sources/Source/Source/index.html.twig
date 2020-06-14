@@ -1,0 +1,109 @@
+{% extends 'Sources/base.html.twig' %}
+
+{% block content_header %}
+{{ parent() }}
+<h1>{{ ('sourceml.list_title.' ~ sourceType)|trans }}</h1>
+{% endblock %}
+
+{% block main %}
+{{ parent() }}
+
+<div class="row">
+
+    {% if (authors|length > 1) or (compositions|length > 0) %}
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            {% if authors|length > 1 %}
+            <form class="navbar-form navbar-right" role="search">
+                <div class="form-group">
+                    <select id="author_select" name="author" class="form-control source_filter">
+                        <option value="0">
+                            {{ 'sourceml.select_author.all'|trans }}
+                        </option>
+                        {% for author in authors %}
+                        <option value="{{ author.id }}"{% if app.request.query.get('author') == author.id %} selected{% endif %}>
+                            {{ author.name }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </form>
+            {% endif %}
+            {% if compositions|length > 0 %}
+            <form class="navbar-form navbar-right" role="search">
+                <div class="form-group">
+                    <select id="composition_select" name="composition" class="form-control source_filter">
+                        <option value="0">
+                            {{ ('sourceml.select_all_composition.' ~ sourceType)|trans }}
+                        </option>
+                        {% for composition in compositions %}
+                        <option value="{{ composition.id }}"{% if app.request.query.get('composition') == composition.id %} selected{% endif %}>
+                            {{ composition.title }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </form>
+            {% endif %}
+        </div>
+    </nav>
+    {% endif %}
+
+</div>
+
+{{
+    include(
+        'Sources/Source/Source/list.html.twig',
+        {
+            sources: sources,
+        }
+    )
+}}
+
+{% if sources|length > 0 %}
+
+{%
+
+    if app.request.query.get('composition')|length == 0
+    or app.request.query.get('composition') == '0'
+
+%}
+
+<div class="navigation">
+    {{ knp_pagination_render(sources) }}
+</div>
+
+{% endif %}
+
+{% else %}
+
+<p>Rien pour le moment</p>
+
+{% endif %}
+
+{% endblock %}
+
+{% block body_end %}
+{{ parent() }}
+{% set editPositions = app.request.query.get('composition') is not null and app.request.query.get('composition') != '0' %}
+<script>
+$(document).ready(
+    function() {
+
+        $(".source_filter").change(
+            function() {
+                var url = "{{ path('source_index', {sourceType: sourceType, author: '1111', composition: '2222'}) }}";
+                url = url.replace('&amp;', '&');
+                var author_select = $("#author_select");
+                url = url.replace('1111', author_select.size() ? author_select.val() : '');
+                var composition_select = $("#composition_select");
+                url = url.replace('2222', composition_select.size() ? composition_select.val() : '');
+                document.location.href = url;
+            }
+        );
+
+    }
+);
+</script>
+
+{% endblock %}

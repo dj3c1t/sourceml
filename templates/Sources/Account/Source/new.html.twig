@@ -1,0 +1,33 @@
+{% extends 'Sources/base.html.twig' %}
+
+{% block content_header %}
+{{ parent() }}
+<h1>Nouvelles sources</h1>
+{% endblock %}
+
+{% block main %}
+{{ parent() }}
+
+<div class="row">
+{% if sourceAuthors|length > 0 %}
+    {% for sourceAuthor in sourceAuthors %}
+    <div class="row box">
+        <div class="col-xs-8">
+            Donner un accès
+            <strong>{{ sourceAuthor.authorRole.name }}</strong>
+            à <strong>{{ sourceAuthor.author.name }}</strong>
+            sur <strong>{{ sourceAuthor.source.title }}</strong>
+        </div>
+        <div class="col-xs-4 text-right">
+            <a href="{{ path('account_source_author_accept', {sourceAuthor: sourceAuthor.id}) }}" class="btn btn-primary">Accepter</a>
+            <a href="{{ path('account_source_author_refuse', {sourceAuthor: sourceAuthor.id}) }}" class="btn btn-danger">Refuser</a>
+        </div>
+    </div>
+    {% endfor %}
+{% else %}
+    <p>Rien pour le moment</p>
+{% endif %}
+
+</div>
+
+{% endblock %}

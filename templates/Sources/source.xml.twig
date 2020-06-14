@@ -1,0 +1,113 @@
+{%
+    autoescape false
+%}<source type="{{ source.sourceType.name }}">
+{%
+    if source is not null
+%}
+    <title><![CDATA[{{ source.title }}]]></title>
+{%
+        if source.link is not null
+%}
+    <link href="{{ source.link|replace({'&': '&amp;'}) }}" />
+{%
+        endif
+%}{%
+        if source.derivations is not null
+%}{%
+            for derivation in source.derivations
+%}
+    <source rel="derivedFrom" src="{{ derivation.url }}" />
+{%
+            endfor
+%}{%
+        endif
+%}{%
+        if source.image is not null
+%}
+    <image src="{{ source.image.url|replace({'&': '&amp;'}) }}"{%
+            if source.image.thumbnail is not null
+%} thumbnail="{{ source.image.thumbnail.url|replace({'&': '&amp;'}) }}"{%
+            endif
+%} />
+{%
+        endif
+%}{%
+        if source.waveform is not null
+%}
+    <waveform src="{{ source.waveform.url|replace({'&': '&amp;'}) }}" />
+{%
+        endif
+%}{%
+        if source.creationDate is not null
+%}
+    <date>{{ source.creationDate|date('Y-m-d') }}</date>
+{%
+        endif
+%}{%
+        if source.getInfo('description') is not null
+%}
+    <description><![CDATA[{{ source.getInfo('description') }}]]></description>
+{%
+        endif
+%}{%
+        for sourceAuthor in source.authors
+%}{%
+            if (
+                sourceAuthor.authorRole is not null
+                and sourceAuthor.isValid is not null
+                and sourceAuthor.isValid
+                and (
+                        sourceAuthor.authorRole.name == 'admin'
+                    or  sourceAuthor.authorRole.name == 'editor'
+                )
+            )
+%}
+    <author role="{{ sourceAuthor.authorRole.name }}" href="{{ sourceAuthor.author.url }}"{%
+                if (
+                        sourceAuthor.author.image is not null
+                    and sourceAuthor.author.image.thumbnail is not null
+                )
+%} image="{{ sourceAuthor.author.image.thumbnail.url }}"{%
+                endif
+%}><![CDATA[{{ sourceAuthor.author.name }}]]></author>
+{%
+            endif
+%}{%
+        endfor
+%}{%
+        for sourceDocument in source.documents
+%}{%
+            set document_url = sourceDocument.url
+%}{%
+            if sourceDocument.media is not null
+%}{%
+                set document_url = sourceDocument.media.url
+%}{%
+            endif
+%}
+    <document src="{{ document_url|replace({'&': '&amp;'}) }}">
+        <![CDATA[{{ sourceDocument.name }}]]>
+    </document>
+{%
+        endfor
+%}{%
+        if source.licence is not null
+%}
+    <licence{% if source.licence.url is not null %} href="{{ source.licence.url }}"{% endif %}>
+        <![CDATA[{{ source.licence.name }}]]>
+    </licence>
+{%
+        endif
+%}{%
+        for sourceComposition in source.sources
+%}
+    <source rel="composedOf" src="{{ sourceml.getXmlUrl(sourceComposition.source) }}" />
+{%
+        endfor
+%}{%
+    endif
+%}
+</source>
+{%
+    endautoescape
+%}

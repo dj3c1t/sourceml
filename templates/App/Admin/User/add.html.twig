@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+{% block content_header %}
+{{ parent() }}
+<h1>Ajouter un utilisateur</h1>
+{% endblock %}
+
+{% block main %}
+{{ parent() }}
+
+{{ include('App/Admin/User/menu.html.twig') }}
+
+<div class="row">
+    <div class="col-xs-6 col-xs-offset-3">
+        {{ form_start(form, {attr: {novalidate: 'novalidate'}}) }}
+        <div class="error">{{ form_errors(form) }}</div>
+        <div class="form-group">
+            {{ form_label(form.username) }}
+            <div class="error">{{ form_errors(form.username) }}</div>
+            {{ form_widget(form.username, {attr: {class: 'form-control'}}) }}
+        </div>
+        <div class="form-group">
+            {{ form_label(form.email) }}
+            <div class="error">{{ form_errors(form.email) }}</div>
+            {{ form_widget(form.email, {attr: {class: 'form-control'}}) }}
+        </div>
+        <div class="form-group">
+            {{ form_label(form.roles) }}
+            <div class="error">{{ form_errors(form.roles) }}</div>
+            <ul class="list-unstyled col-xs-offset-1">
+                {% for role in form.roles %}
+                <li>
+                    {{ form_widget(role) }}
+                    {{ form_label(role) }}
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="form-group">
+            {{ form_label(form.password.first) }}
+            <div class="error">{{ form_errors(form.password.first) }}</div>
+            {{ form_widget(form.password.first, {attr: {class: 'form-control'}}) }}
+        </div>
+        <div class="form-group">
+            {{ form_label(form.password.second) }}
+            <div class="error">{{ form_errors(form.password.second) }}</div>
+            {{ form_widget(form.password.second, {attr: {class: 'form-control'}}) }}
+        </div>
+        <div class="form-group">
+            <div class="error">{{ form_errors(form.isActive) }}</div>
+            {{ form_widget(form.isActive) }}
+            {{ form_label(form.isActive) }}
+        </div>
+        <button type="submit" class="btn btn-primary pull-right">Ajouter l'utilisateur</button>
+        {{ form_end(form) }}
+    </div>
+</div>
+
+{% endblock %}

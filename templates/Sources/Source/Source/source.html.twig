@@ -1,0 +1,130 @@
+<section id="source_{{ source.id }}" class="source {{ layout }}">
+    {% if layout == 'list' %}
+    <header>
+        <h1>
+            <a href="{{ source.link }}">
+                {{ source.title }}
+            </a>
+        </h1>
+        <ul class="authors">
+            {% for sourceAuthor in source.authors %}
+            {%
+                if (
+                    sourceAuthor.isValid
+                    and (
+                           sourceAuthor.authorRole is null
+                        or sourceAuthor.authorRole.name == 'admin'
+                        or sourceAuthor.authorRole.name == 'editor'
+                    )
+                )
+            %}
+            {% set author = sourceAuthor.author %}
+            <li class="author">
+                {% if author.url %}
+                <a class="author_box" href="{{ author.url }}">
+                {% endif %}
+                    <span class="name">
+                        {{ author.name }}
+                    </span>
+                {% if author.url %}
+                </a>
+                {% endif %}
+            </li>
+            {% endif %}
+            {% endfor %}
+        </ul>
+    </header>
+    {% endif %}
+    <div class="content">
+        {% set with_image = false %}
+        {% if layout == 'list' %}
+        {%
+            if source.image is not null
+            and source.image.thumbnail is not null
+        %}
+        {% set with_image = true %}
+        <a class="logo" href="{{ source.link }}" style="background-image: url('{{ source.image.thumbnail.url }}');">
+            <span>{{ source.title }}</span>
+        </a>
+        {% endif %}
+        {% endif %}
+
+        {% set playerAudioFiles = sourceml.getPlayerAudioFiles(source) %}
+        {% if playerAudioFiles|length > 0 %}
+        <div class="player{% if with_image %} with_image{% endif %}">
+            <audio class="jap">
+                {% for playerAudioFile in playerAudioFiles %}
+                <source src="{{ playerAudioFile['url'] }}" type="{{ playerAudioFile['mimeType'] }}">
+                {% endfor %}
+                {% if source.waveform is not null %}
+                <img class="waveform" src="{{ source.waveform.url }}" alt="waveform" />
+                {% endif %}
+            </audio>
+        </div>
+        {% endif %}
+        <div class="meta">
+            {% if source.licence is not null %}
+            <div class="licence">
+                {% if source.licence.url|length > 0 %}
+                <a href="{{ source.licence.url }}">
+                {% endif %}
+                {% if source.licence.image is not null %}
+                <img src="{{ source.licence.image.url }}" alt="{{ source.licence.name }}" />
+                {% else %}
+                {{ source.licence.name }}
+                {% endif %}
+                {% if source.licence.url|length > 0 %}
+                </a>
+                {% endif %}
+            </div>
+            {% endif %}
+            {% if source.creationDate is not null %}
+            <div class="creation_date">
+                {{ source.creationDate|date('d/m/Y') }}
+            </div>
+            {% endif %}
+            <div class="xml">
+                <a href="{{ source.xmlUrl }}">xml</a>
+            </div>
+        </div>
+        {% if source.documents|length > 0 %}
+        <span class="files_download glyphicon glyphicon-download-alt"></span>
+        <ul class="files">
+            {% for document in source.documents %}
+            {% if document.url|length > 0 %}
+            <li>
+                <a href="{{ document.url }}">
+                    {{ document.name }}
+                </a>
+            </li>
+            {% endif %}
+            {% endfor %}
+        </ul>
+        {% endif %}
+        {%
+            if source.id is not null
+            and source.sources is not null
+            and source.sources|length > 0
+        %}
+        <div class="composition_sources">
+            <button class="btn btn-default toggle_composition_sources" data-source-id="{{ source.id }}" style="margin-bottom: 1em;">
+                <span class="glyphicon glyphicon-chevron-down"></span>
+                {{ ('sourceml.composition_sources_title.' ~ source.sourceType.name)|trans }}
+                <i class="loading glyphicon glyphicon-repeat glyphicon-rotate"></i>
+            </button>
+            <div class="loaded"></div>
+        </div>
+        {% endif %}
+        {% set derivations = sourceml.getDerivations(source) %}
+        {% if derivations|length > 0 %}
+        <div class="source_derivations">
+            <button class="btn btn-default toggle_source_derivations" data-source-id="{{ source.id }}" style="margin-bottom: 1em;">
+                <span class="glyphicon glyphicon-chevron-down"></span>
+                Dérivations
+                <i class="loading glyphicon glyphicon-repeat glyphicon-rotate"></i>
+            </button>
+            <div class="loaded"></div>
+        </div>
+        {% endif %}
+    </div>
+</section>

@@ -1,0 +1,49 @@
+{% extends 'Sources/base.html.twig' %}
+
+{% block head %}
+{{ parent() }}
+{{ include('JQFileUpload/head.html.twig') }}
+{% endblock %}
+
+{% block content_header %}
+{{ parent() }}
+<h1>Ajouter un auteur</h1>
+{% endblock %}
+
+{% block main %}
+{{ parent() }}
+
+{{ include('Sources/Account/Author/menu.html.twig') }}
+
+<div class="row">
+    <div class="col-xs-12">
+        {{ form_start(form, {attr: {novalidate: 'novalidate', enctype: "multipart/form-data"}}) }}
+        <div class="error">{{ form_errors(form) }}</div>
+        <div class="form-group">
+            <label>Image</label>
+            {{ include('JQFileUpload/Form/singleUpload.html.twig', {
+                inputName: 'logo'
+            }) }}
+        </div>
+        <div class="form-group">
+            {{ form_label(form.name) }}
+            <div class="error">{{ form_errors(form.name) }}</div>
+            {{ form_widget(form.name, {attr: {class: 'form-control'}}) }}
+        </div>
+        <div class="form-group">
+            {{ form_label(form.description) }}
+            <div class="error">{{ form_errors(form.description) }}</div>
+            {{ form_widget(form.description, {attr: {class: 'tinymce', 'data-theme': 'basic'}}) }}
+        </div>
+        <button type="submit" class="btn btn-primary pull-right">Ajouter l'autheur</button>
+        {{ form_end(form) }}
+    </div>
+</div>
+
+{% endblock %}
+
+{% block body_end %}
+{{ parent() }}
+{{ include('JQFileUpload/body_end.html.twig') }}
+{{ tinymce_init() }}
+{% endblock %}

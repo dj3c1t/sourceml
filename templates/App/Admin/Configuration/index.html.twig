@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block content_header %}
+{{ parent() }}
+<h1>Configuration générale</h1>
+{% endblock %}
+
+{% block main %}
+{{ parent() }}
+
+<div class="row">
+    <div id="admin_configuration_form_container" class="col-xs-12">
+        <form action="{{ path('admin_configuration') }}" method="post">
+            <div class="form-group">
+                <label for="username">Titre du site :</label>
+                <input class="form-control" type="text" id="site_title" name="site_title" value="{{ configuration['site_title'] }}" />
+            </div>
+            <button type="submit" class="btn btn-primary pull-right">Enregistrer</button>    
+        </form>
+    </div>
+</div>
+
+{% endblock %}

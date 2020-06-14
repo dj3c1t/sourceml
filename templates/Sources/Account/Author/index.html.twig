@@ -1,0 +1,53 @@
+{% extends 'Sources/base.html.twig' %}
+
+{% block content_header %}
+{{ parent() }}
+<h1>Auteurs</h1>
+{% endblock %}
+
+{% block main %}
+{{ parent() }}
+
+{{ include('Sources/Account/Author/menu.html.twig') }}
+
+<div class="row">
+{% if authors|length > 0 %}
+    <table class="table">
+        <thead>
+            <tr>
+                <th>{{ knp_pagination_sortable(authors, 'Nom', 'a.name') }}</th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for author in authors %}
+        <tr{% if loop.index is even %} class="even"{% endif %}>
+            <td>{{ author.name }}</td>
+            <td>
+                <a class="btn btn-default" href="{{ path('account_author_edit', {'author': author.id}) }}">
+                    <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+                </a>
+            </td>
+            <td>
+                {% if not sourceml.authorHasSources(author) %}
+                <a class="btn btn-default bb_confirm"
+                   data-message="Effacer cet auteur ?"
+                   href="{{ path('account_author_delete', {'author': author.id}) }}">
+                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                </a>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <div class="navigation">
+        {{ knp_pagination_render(authors) }}
+    </div>
+{% else %}
+    <p>Aucun auteur pour le moment</p>
+{% endif %}
+</div>
+
+{% endblock %}

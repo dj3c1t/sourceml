@@ -1,0 +1,31 @@
+parameters:
+
+    default_route:
+        route: author_index
+    web_dir: public
+    sourceml_run_installer: '%env(bool:SOURCEML_RUN_INSTALLER)%'
+
+services:
+
+    sourceml_app.request_listener:
+        class: Sourceml\Service\App\Listener\RequestListener
+        arguments: ['@service_container']
+        tags:
+            - { name: kernel.event_listener, event: kernel.request }
+
+    sourceml_app.install_manager:
+        public: true
+        class: Sourceml\Service\App\InstallManager
+        arguments: ['@service_container']
+
+    sourceml_app.menus:
+        public: true
+        class: Sourceml\Service\App\Menus
+        arguments: ['@service_container']
+
+    gedmo.listener.timestampable:
+        class: Gedmo\Timestampable\TimestampableListener
+        tags:
+            - { name: doctrine.event_subscriber, connection: default }
+        calls:
+            - [ setAnnotationReader, [ '@annotation_reader' ] ]

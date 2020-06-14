@@ -1,0 +1,116 @@
+<script>
+$(document).ready(function() {
+
+    function init_source_derivation(source_derivation) {
+
+        source_derivation.find(".save_derivation").click(
+            function() {
+                var save_button = $(this);
+                save_button.find(".text").hide();
+                save_button.find(".loading").show();
+                var id = source_derivation.attr("data-id");
+                var derivation_url = source_derivation.find(".derivation_url").val();
+
+                $.post(
+                    "{{ path('account_source_derivation_save') }}",
+                    {
+                        id: id,
+                        derivation_url: derivation_url
+                    }
+                ).done(
+                    function(response) {
+                        if(response["error"]) {
+                            save_button.find(".loading").hide();
+                            save_button.find(".text").show();
+                            app_message("danger", source_derivation, response["error"]);
+                            return;
+                        }
+                        source_derivation.replaceWith(response["data"]["derivation_form"]);
+                        source_derivation = $("#source_derivation_" + id);
+                        init_source_derivation(source_derivation);
+                        init_bb_confirm(source_derivation.find(".delete_derivation"));
+                        app_message("success", source_derivation, "La source de dérivation a été enregistrée");
+                    }
+                );
+            }
+        );
+
+        source_derivation.find(".toggle_source_xml_view").click(
+            function() {
+                var xmlPre = $(this).parents(".source_xml_view").first().find("pre");
+                xmlPre.slideToggle();
+            }
+        );
+
+    }
+
+    function add_derivation(add_button) {
+        add_button.find(".text").hide();
+        add_button.find(".loading").show();
+        var id = add_button.attr("data-id-source");
+        $.post(
+            "{{ path('account_source_derivation_add') }}",
+            {
+                id: id,
+            }
+        ).done(
+            function(response) {
+                add_button.find(".loading").hide();
+                add_button.find(".text").show();
+                if(response["error"]) {
+                    app_message("danger", add_button.closest(".row"), response["error"]);
+                    return;
+                }
+                $("#derivations").append(response["data"]["derivation_form"]);
+                source_derivation = $("#derivations .source_derivation").last();
+                init_source_derivation($("#source_derivation_" + response["data"]["derivation_id"]));
+                init_bb_confirm(source_derivation.find(".delete_derivation"));
+            }
+        );
+    }
+
+    $(".source_derivation").each(
+        function() {
+            init_source_derivation($(this));
+        }
+    );
+
+    $("#add_derivation").click(
+        function() {
+            add_derivation($(this));
+        }
+    );
+
+});
+
+function delete_source_derivation(id) {
+    var source_derivation = $("#source_derivation_" + id);
+    var delete_button = source_derivation.find(".delete_derivation");
+    delete_button.find(".text").hide();
+    delete_button.find(".loading").show();
+    var id = source_derivation.attr("data-id");
+    $.post(
+        "{{ path('account_source_derivation_delete') }}",
+        {
+            id: id,
+        }
+    ).done(
+        function(response) {
+            delete_button.find(".loading").hide();
+            delete_button.find(".text").show();
+            if(response["error"]) {
+                app_message("danger", source_derivation, response["error"]);
+                return;
+            }
+            source_derivation.fadeOut(
+                400,
+                function() {
+                    source_derivation.remove();
+                }
+            );
+        }
+    );
+
+}
+
+</script>

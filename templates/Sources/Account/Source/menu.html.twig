@@ -1,0 +1,21 @@
+{% set route = app.request.attributes.get('_route') %}
+<ul class="nav nav-tabs main_tab">
+
+    <li role="presentation"{% if route == 'account_source_index' %} class="active"{% endif %}>
+        <a href="{{ path('account_source_index', {sourceType: sourceType}) }}">
+            {{ ('sourceml.menu_list.' ~ sourceType)|trans }}
+        </a>
+    </li>
+    <li role="presentation"{% if route == 'account_source_add' %} class="active"{% endif %}>
+        <a href="{{ path('account_source_add', {sourceType: sourceType}) }}">
+            {{ ('sourceml.menu_add.' ~ sourceType)|trans }}
+        </a>
+    </li>
+    {% if sourceml.canOpenUrl() %}
+    <li role="presentation"{% if route == 'account_source_add_reference' %} class="active"{% endif %}>
+        <a href="{{ path('account_source_add_reference', {sourceType: sourceType}) }}">
+            {{ ('sourceml.menu_add_reference.' ~ sourceType)|trans }}
+        </a>
+    </li>
+    {% endif %}
+</ul>

@@ -1,0 +1,16 @@
+services:
+
+    jq_file_upload.upload_handler:
+        public: true
+        class: Sourceml\Service\JQFileUpload\UploadHandler
+
+    jq_file_upload.upload_manager:
+        public: true
+        class: Sourceml\Service\JQFileUpload\UploadManager
+        arguments: ['@service_container']
+
+    jq_file_upload.media_load_listener:
+        class: Sourceml\Service\JQFileUpload\MediaLoader
+        tags:
+            - { name: doctrine.event_listener, event: postLoad }
+        arguments: ['@service_container']

@@ -1,0 +1,56 @@
+{% extends 'Sources/base.html.twig' %}
+
+{% block content_header %}
+{{ parent() }}
+<h1>Auteurs</h1>
+{% endblock %}
+
+{% block main %}
+{{ parent() }}
+{% if authors|length > 0 %}
+
+<div class="row">
+<ul class="authors_list">
+
+{%     for author in authors %}
+
+    <li class="author">
+        {% if author.url %}
+        <a class="author_box" href="{{ author.url }}">
+        {% else %}
+        <div class="author_box">
+        {% endif %}
+            {%
+                if author.image is not null
+                and author.image.thumbnail is not null
+             %}
+            <img class="logo" src="{{ author.image.thumbnail.url }}" />
+            {% endif %}
+            <span class="name">
+                <span>{{ author.name }}</span>
+            </span>
+        {% if author.url %}
+        </a>
+        {% else %}
+        </div>
+        {% endif %}
+    </li>
+
+{%     endfor %}
+
+</ul>
+</div>
+
+<div class="navigation">
+    {{ knp_pagination_render(authors) }}
+</div>
+
+{% else %}
+
+<div class="row">
+    <p>Aucun auteur pour le moment</p>
+</div>
+
+{% endif %}
+
+{% endblock %}

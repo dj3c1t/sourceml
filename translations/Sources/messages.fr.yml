@@ -1,0 +1,45 @@
+sourceml:
+    source_type:
+        album: album
+        track: morceau
+        source: source
+    list_title:
+        album: Albums
+        track: Morceaux
+        source: Sources
+    add_title:
+        album: Ajouter un album
+        track: Ajouter un morceau
+        source: Ajouter une source
+    add_reference_title:
+        album: Ajouter une référence vers un album
+        track: Ajouter une référence vers un morceau
+        source: Ajouter une référence vers une source
+    edit_title:
+        album: sourceName
+        track: sourceName
+        source: sourceName
+    edit_reference_title:
+        album: sourceName (référence)
+        track: sourceName (référence)
+        source: sourceName (référence)
+    menu_list:
+        album: Liste des albums
+        track: Liste des morceaux
+        source: Liste des sources
+    menu_add:
+        album: Ajouter un album
+        track: Ajouter un morceau
+        source: Ajouter une source
+    menu_add_reference:
+        album: Ajouter une référence vers un album
+        track: Ajouter une référence vers un morceau
+        source: Ajouter une référence vers une source
+    select_author:
+        all: Tous les auteurs
+    select_all_composition:
+        track: Tous les albums
+        source: Tous les morceaux
+    composition_sources_title:
+        album: Morceaux
+        track: Sources

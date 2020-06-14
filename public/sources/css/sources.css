@@ -1,0 +1,277 @@
+a.box_link {
+    text-decoration: none;
+}
+
+a.box_link:hover .box {
+    background-color: #f1f1f1;
+}
+
+.source_list .source {
+    border: solid 1px #c0c0c0;
+    border-radius: 3px;
+    padding: 1em 1em 0 1em;
+    margin-bottom: 1em;
+}
+
+.source header .authors {
+    float: right;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    text-align: right;
+}
+
+.source header .authors .author {
+    font-weight: bold;
+}
+
+.source header h1 {
+    float: left;
+    font-size: 1.5em;
+}
+
+.source.list .content a.logo {
+    float: left;
+    padding: 0.5em;
+    width: 133px;
+    height: 100px;
+    border: solid 1px #c0c0c0;
+    border-radius: 3px;
+    margin: 0 1em 1em 0;
+    background-size: cover;
+}
+
+.source.list .content a.logo:hover {
+    background-color: #f1f1f1;
+}
+
+.source.list .content a.logo img {
+    display: block;
+    max-width: 100%;
+    max-height: 100%;
+    margin: 0 auto;
+}
+
+.source.list .content a.logo span {
+    display: none;
+}
+
+.source.list .content .player.with_image {
+    margin-left: 150px;
+}
+
+.author_view_image,
+.source_view_image {
+    text-align: center;
+    margin: 1em 1em 3em 1em;
+}
+
+.source_view_image {
+}
+
+.author_view_image img,
+.source_view_image img {
+    max-width: 75%;
+    display: block;
+    margin: 0 auto;
+}
+
+.source_view_authors {
+    float: right;
+    width: 220px;
+    padding: 0;
+    margin-top: 1em;
+}
+
+.source_view_authors ul {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
+
+.source_view_authors .author {
+    margin: 0;
+    padding: 0;
+    border: solid 1px #c0c0c0;
+    margin-bottom: 1em;
+    border-radius: 3px;
+}
+
+.source_view_authors .author .author_box {
+    display: block;
+    padding: 0.5em;
+    text-decoration: none;
+    color: #333333;
+}
+
+.source_view_authors .author a:hover {
+    background-color: #f1f1f1;
+}
+
+.source_view_authors .author .logo {
+    display: block;
+    margin: 0 auto 1em auto;
+    max-width: 100%;
+}
+
+.source_view_authors .author .name {
+    display: block;
+    padding: 0.5em;
+    text-align: center;
+}
+
+.source .content {
+	overflow: auto;
+	width: 100%;
+}
+
+.source_view_content {
+    margin-right: 240px;
+}
+
+.source_view_content .description {
+    border-top: solid 1px #e5e5e5;
+    margin: 1em;
+    padding: 2em 1em;
+}
+
+.source .content .meta {
+    clear: both;
+    float: right;
+    text-align: right;
+}
+
+.source .content .files_download {
+    float: left;
+    font-size: 1em;
+    color: #999999;
+    display: block;
+    line-height: 2em;
+    padding: 0 1em;
+}
+
+.source .content .files {
+    float: left;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.source .content .files li {
+    float: left;
+}
+
+.source .content .files li a {
+    display: block;
+    border: solid 1px #c0c0c0;
+    margin: 0 0.5em 0.5em 0;
+    padding: 0.3em 1em;
+    border-radius: 3px;
+    color: #333333;
+    text-decoration: none;
+}
+
+.source .content .files li a:hover {
+    background-color: #f1f1f1;
+}
+
+.source .composition_sources {  
+    clear: both;
+}
+
+.source .composition_sources .loading {  
+    display: none;
+}
+
+.toggle_composition_sources {
+    margin-bottom: 1em;
+}
+
+
+.authors_list {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
+
+.authors_list .author {
+    float: left;
+    width: 220px;
+    margin: 1em;
+    padding: 0;
+    border: solid 1px #c0c0c0;
+    border-radius: 3px;
+    position: relative;
+}
+
+.authors_list .author .author_box {
+    display: block;
+    text-decoration: none;
+    color: #333333;
+    height: 200px;
+    padding-top: 0.5em;
+    overflow: hidden;
+}
+
+.authors_list .author .author_box:hover {
+    background-color: #f1f1f1;
+}
+
+.authors_list .author .logo {
+    display: block;
+    margin: 0 auto;
+    max-width: 100%;
+    border-radius: 3px;
+}
+
+.authors_list .author .author_box:hover .name {
+    background-color: #f1f1f1;
+}
+.authors_list .author .name {
+    display: block;
+    text-align: center;
+    background-color: #ffffff;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    font-weight: bold;
+}
+
+.authors_list .author .name span {
+    display: block;
+    margin-top: 0.5em;
+    border-top: solid 1px #c0c0c0;
+    padding: 1em;
+}
+
+.author_description{
+    margin: 0 0 4em 0;
+}
+
+.author_description .description {
+    padding: 1em;
+}
+
+.ariane span {
+    font-size: 0.7em;
+    color: #999999;
+}
+
+ul.derivation_sources {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+ul.derivation_sources li {
+    margin-left: 2em;
+}
+
+.source_xml_view pre {
+    margin-top: 1em;
+    display: none;
+}
+
+.source_navigation {
+    padding-bottom: 2em;
+}

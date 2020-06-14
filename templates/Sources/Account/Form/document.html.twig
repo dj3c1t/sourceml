@@ -1,0 +1,55 @@
+{% set document_is_media = document.media is not null %}
+<div id="source_document_{{ document.id }}" data-id="{{ document.id }}" class="source_document box">
+
+    <div class="row">
+        <div class="col-xs-4">
+            <div class="form-group">
+                <label>Type de document</label>
+                <select name="document_type" class="form-control document_type" style="width: auto">
+                    <option value="url">Url d'un fichier sur Internet</option>
+                    <option value="upload"{% if document_is_media %} selected{% endif %}>Upload</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-xs-8">
+            <div class="form-group">
+                <label>Nom</label>
+                <input type="text" name="document_name" value="{{ document.name }}" class="form-control document_name" />
+            </div>
+        </div>
+    </div>
+
+    <div class="url_document"{% if document_is_media %} style="display: none"{% endif %}>
+        <div class="form-group">
+            <label>Url</label>
+            <input type="text" name="document_url" value="{{ document.url }}" class="form-control document_url" />
+        </div>
+    </div>
+
+    <div class="media_document"{% if not document_is_media %} style="display: none"{% endif %}>
+        {{ include('JQFileUpload/Form/singleUpload.html.twig', {
+            handler: 'sourceml_source_document',
+            id: document.id
+        }) }}
+    </div>
+
+    <div class="row">
+        <div class="pull-right">
+            <button class="btn btn-primary save_document">
+                <i class="loading glyphicon glyphicon-repeat glyphicon-rotate"></i>
+                <span class="text">Enregistrer le document</span>
+            </button>
+            {% if sourceml.userCan('edit', document.source) %}
+            <a href="javascript:delete_source_document({{ document.id }});" class="btn btn-danger bb_confirm delete_document"
+               data-message="Effacer ce document ?">
+                <i class="loading glyphicon glyphicon-repeat glyphicon-rotate"></i>
+                <span class="text">
+                    <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                    Effacer le document
+                </span>
+            </a>
+            {% endif %}
+        </div>
+    </div>
+
+</div>

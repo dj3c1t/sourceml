@@ -1,0 +1,17 @@
+{% if sources|length > 0 %}
+<div class="source_list">
+{% for source in sources %}
+
+{{
+    include(
+        'Sources/Source/Source/source.html.twig',
+        {
+            source: source.isReference ? source.reference : source,
+            layout: 'list'
+        }
+    )
+}}
+
+{% endfor %}
+</div>
+{% endif %}

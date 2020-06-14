@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        {% block head %}
+        {{ include('App/head.html.twig') }}
+        {% endblock %}
+    </head>
+    <body role="document" class="full-height">
+
+        <div class="container-full full-height">
+
+            <!-- header -->
+            <div class="row" id="header">
+                <div class="content">
+                    {% block header %}
+                    {{ render(controller('Sourceml\\Controller\\App\\View\\HeaderController:displayAction')) }}
+                    {% endblock %}
+                </div>
+            </div>
+
+            <div class="row">
+
+                <!-- sidebar -->
+                <div class="col-xs-2" id="sidebar">
+                    {% block sidebar %}
+                    {{ render(controller(
+                        'Sourceml\\Controller\\App\\View\\ColonneController::displayAction',
+                        {
+                            'route': app.request.attributes.get('_route'),
+                            'parameters': app.request.attributes.get('_route_params')
+                        }
+                    )) }}
+                    {% endblock %}
+                </div>
+    
+                <div class="main-col col-xs-10">
+
+                    <!-- main -->
+                    <div class="row" id="main">
+                        <div class="content">
+                            <section id="{{ app.request.attributes.get('_route') }}">
+                                <header>
+                                    {% block content_header %}
+                                    {% endblock %}
+                                </header>
+                                <div class="main">
+                                {{ include('App/messages.html.twig') }}
+                                {% block main %}
+                                {% endblock %}
+                                </div>
+                            </section>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    {% block body_end %}
+    {{ include('App/body_end.html.twig') }}
+    {% endblock %}
+    </body>
+</html>

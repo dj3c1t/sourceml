@@ -1,0 +1,65 @@
+install_requirements:
+    path:     /install/requirements
+    controller: Sourceml\Controller\App\InstallController::requirementsAction
+
+install_notwritable:
+    path:     /install/notwritable
+    controller: Sourceml\Controller\App\InstallController::notwritableAction
+
+install:
+    path:     /install
+    controller: Sourceml\Controller\App\InstallController::indexAction
+
+install_success:
+    path:     /install/success
+    controller: Sourceml\Controller\App\InstallController::successAction
+
+login:
+    path:   /login
+    controller: Sourceml\Controller\App\SecurityController::loginAction
+
+login_check:
+    path:   /login_check
+
+logout:
+    path:   /logout
+
+homepage:
+    path:     /
+    controller: Sourceml\Controller\App\DefaultController::indexAction
+
+account:
+    path:     /account
+    controller: Sourceml\Controller\App\Account\IndexController::indexAction
+
+account_configuration:
+    path:     /account/configuration
+    controller: Sourceml\Controller\App\Account\ConfigurationController::indexAction
+
+admin:
+    path:     /admin
+    controller: Sourceml\Controller\App\Admin\IndexController::indexAction
+
+admin_configuration:
+    path:     /admin/configuration
+    controller: Sourceml\Controller\App\Admin\ConfigurationController::indexAction
+
+admin_user_list:
+    path:     /admin/user/list
+    controller: Sourceml\Controller\App\Admin\UserController::indexAction
+
+admin_user_add:
+    path:     /admin/user/add
+    controller: Sourceml\Controller\App\Admin\UserController::addAction
+
+admin_user_edit:
+    path:     /admin/user/edit/{user}
+    controller: Sourceml\Controller\App\Admin\UserController::editAction
+
+admin_user_toogle_active:
+    path:     /admin/user/toogleactive/{user}
+    controller: Sourceml\Controller\App\Admin\UserController::toogleActiveAction
+
+admin_user_delete:
+    path:     /admin/user/delete/{user}
+    controller: Sourceml\Controller\App\Admin\UserController::deleteAction

@@ -1,0 +1,44 @@
+<div id="source_derivation_{{ derivation.id }}" data-id="{{ derivation.id }}" class="source_derivation box">
+
+    <div class="url_derivation">
+        <div class="form-group">
+            <label>Url</label>
+            <input type="text" name="derivation_url" value="{{ derivation.url }}" class="form-control derivation_url" />
+        </div>
+    </div>
+
+    {% set derivationSource = derivation.derivationSource %}
+    {% if derivationSource is not null %}
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="form-group source_xml_view">
+                <button class="btn btn-default toggle_source_xml_view">
+                    Informations lues dans le fichier XML
+                    <span class="glyphicon glyphicon-chevron-down"></span>
+                </button>
+                <pre>{{ sourceml.dump(derivationSource) }}</pre>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <div class="row">
+        <div class="pull-right">
+            <button class="btn btn-primary save_derivation">
+                <i class="loading glyphicon glyphicon-repeat glyphicon-rotate"></i>
+                <span class="text">Enregistrer la source de dérivation</span>
+            </button>
+            {% if sourceml.userCan('edit', derivation.source) %}
+            <a href="javascript:delete_source_derivation({{ derivation.id }});" class="btn btn-danger bb_confirm delete_derivation"
+               data-message="Effacer cette source de dérivation ?">
+                <i class="loading glyphicon glyphicon-repeat glyphicon-rotate"></i>
+                <span class="text">
+                    <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                    Effacer la source de dérivation
+                </span>
+            </a>
+            {% endif %}
+        </div>
+    </div>
+
+</div>

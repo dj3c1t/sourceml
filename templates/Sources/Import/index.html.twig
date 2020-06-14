@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block header %}
+<h1>Upgrade</h1>
+{% endblock %}
+
+{% block main %}
+{{ parent() }}
+
+<div class="row">
+    <div class="col-xs-10 col-xs-offset-1">
+        <h3>Upgrade d'une version 1 de SourceML vers une version 2</h3>
+        <a href="{{ path('sourceml_do_import_previous_version') }}" class="btn btn-primary">Lancer l'upgrade</a>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,206 @@
+{% extends 'Sources/base.html.twig' %}
+
+{% block head %}
+{{ parent() }}
+{{ include('JQFileUpload/head.html.twig') }}
+{% endblock %}
+
+{% block content_header %}
+{{ parent() }}
+<h1>{{ ('sourceml.edit_title.' ~ sourceType)|trans({sourceName: source.title}) }}</h1>
+{% endblock %}
+
+{% block main %}
+{{ parent() }}
+
+{{ include('Sources/Account/Source/menu.html.twig', {sourceType: sourceType}) }}
+
+<div class="row">
+    <div class="col-xs-12">
+        <div class="form-group">
+            <label>Image</label>
+            {{ include('JQFileUpload/Form/singleUpload.html.twig', {
+                handler: 'sourceml_source_image',
+                id: source.id
+            }) }}
+        </div>
+        <div class="form-group">
+            <label>Auteurs</label>
+            <div class="authors">
+                {%    set nbAdmin = 0                                %}
+                {%    for sourceAuthor in source.authors             %}
+                {%        if sourceAuthor.authorRole.name == 'admin'
+                          and sourceAuthor.isValid                   %}
+                {%            set nbAdmin = nbAdmin + 1              %}
+                {%        endif                                      %}
+                {%    endfor                                         %}
+                {%    set canRemoveAdmin = nbAdmin > 1               %}
+                {% for sourceAuthor in source.authors %}
+                <div class="author row box">
+                    <div class="col-xs-4 name">
+                        {{ sourceAuthor.author.name }}
+                    </div>
+                    <div class="col-xs-4 role">
+                        {{ sourceAuthor.authorRole.name }}
+                    </div>
+                    <div class="col-xs-2 active text-center">
+                        <span class="glyphicon glyphicon-ok-circle green{%
+                            if sourceAuthor.isValid
+                        %} active{% endif %}" aria-hidden="true"></span>
+                    </div>
+                    {%
+                        if  sourceml.userCan('admin', source)
+                        and (
+                            canRemoveAdmin
+                            or not sourceAuthor.isValid
+                            or sourceAuthor.authorRole.name != 'admin'
+                        )
+                    %}
+                    <div class="col-xs-2 admin text-center">
+                        <a class="btn btn-default bb_confirm"
+                           data-message="Enlever cet auteur ?"
+                           href="{{ path('account_source_author_delete', {'sourceAuthor': sourceAuthor.id}) }}">
+                            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                        </a>
+                    </div>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% if sourceml.userCan('admin', source) and authors|length > 0 %}
+        <div class="form-group">
+            <div class="row">
+                <button id="toggle_add_author" class="btn btn-default pull-right">
+                    <span class="glyphicon glyphicon-chevron-down"></span>
+                    Ajouter un auteur
+                </button>
+            </div>
+            <form id="add_author_form" action="{{ path('account_source_author_add') }}" method="post" style="display: none">
+                <input type="hidden" name="source" value="{{ source.id }}" />
+                <div class="add_source_author row box">
+                    <div class="col-xs-4 name">
+                        <select name="author" class="form-control">
+                            {% for author in authors %}
+                            <option value="{{ author.id }}">{{ author.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-xs-4 role">
+                        <select name="author_role" class="form-control">
+                            {% for authorRole in authorRoles %}
+                            <option value="{{ authorRole.id }}">{{ authorRole.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-xs-2 add text-center">
+                        <button type="submit" class="btn btn-success">
+                            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        {% endif %}
+        {{ form_start(form, {attr: {novalidate: 'novalidate', enctype: "multipart/form-data"}}) }}
+        <div class="error">{{ form_errors(form) }}</div>
+        {% if form.offsetExists('composition') %}
+        <div class="form-group">
+            {{ form_label(form.composition) }}
+            <div class="error">{{ form_errors(form.composition) }}</div>
+            {{ form_widget(form.composition, {attr: {class: 'form-control', style: 'width: auto'}}) }}
+        </div>
+        {% endif %}
+        <div class="form-group">
+            {{ form_label(form.title) }}
+            <div class="error">{{ form_errors(form.title) }}</div>
+            {{ form_widget(form.title, {attr: {class: 'form-control'}}) }}
+        </div>
+        {% if form.offsetExists('licence') %}
+        <div class="form-group">
+            {{ form_label(form.licence) }}
+            <div class="error">{{ form_errors(form.licence) }}</div>
+            {{ form_widget(form.licence, {attr: {class: 'form-control', style: 'width: auto'}}) }}
+        </div>
+        {% endif %}
+        <div class="form-group">
+            {{ form_label(form.description) }}
+            <div class="error">{{ form_errors(form.description) }}</div>
+            {{ form_widget(form.description, {attr: {class: 'tinymce', 'data-theme': 'basic'}}) }}
+        </div>
+        <button type="submit" class="btn btn-primary pull-right">Enregistrer</button>
+        {{ form_end(form) }}
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xs-12">
+        <h3>Documents</h3>
+        <div id="documents">
+            {% for document in source.documents %}
+            {{ include('Sources/Account/Form/document.html.twig', {
+                document: document,
+                source: source
+            }) }}
+            {% endfor %}
+        </div>
+        <div class="row box">
+            <button id="add_document" data-id-source="{{ source.id }}" class="btn btn-success pull-right">
+                <i class="loading glyphicon glyphicon-repeat glyphicon-rotate"></i>
+                <span class="text">
+                    <i class="glyphicon glyphicon-plus"></i>
+                    Ajouter un document
+                </span>
+            </button>
+        </div>
+    </div>
+</div>
+
+
+{% if sourceml.canOpenUrl() %}
+<div class="row">
+    <div class="col-xs-12">
+        <h3>Sources de dérivation</h3>
+        <div id="derivations">
+            {% for derivation in source.derivations %}
+            {{ include('Sources/Account/Form/derivation.html.twig', {
+                derivation: derivation,
+                source: source
+            }) }}
+            {% endfor %}
+        </div>
+        <div class="row box">
+            <button id="add_derivation" data-id-source="{{ source.id }}" class="btn btn-success pull-right">
+                <i class="loading glyphicon glyphicon-repeat glyphicon-rotate"></i>
+                <span class="text">
+                    <i class="glyphicon glyphicon-plus"></i>
+                    Ajouter une source de dérivation
+                </span>
+            </button>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+{% endblock %}
+
+{% block body_end %}
+{{ parent() }}
+{{ include('JQFileUpload/body_end.html.twig') }}
+{{ include('Sources/Account/Js/documents.html.twig') }}
+{{ include('Sources/Account/Js/derivations.html.twig') }}
+{{ tinymce_init() }}
+
+<script>
+$(document).ready(
+    function() {
+        $("#toggle_add_author").click(
+            function() {
+                $("#add_author_form").slideToggle();
+            }
+        );
+    }
+);
+</script>
+
+{% endblock %}

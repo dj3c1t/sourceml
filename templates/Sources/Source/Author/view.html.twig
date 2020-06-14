@@ -1,0 +1,42 @@
+{% extends 'Sources/base.html.twig' %}
+
+{% block content_header %}
+{{ parent() }}
+<h1>{{ author.name }}</h1>
+{% endblock %}
+
+{% block main %}
+{{ parent() }}
+
+<div class="author_description">
+    {% if author.image is not null %}
+    <div class="author_view_image">
+        <img src="{{ author.image.url }}" />
+    </div>
+    {% endif %}
+    
+    {% if author.description is not null %}
+    <div class="description">
+    {% autoescape false %}
+    {{ author.description }}
+    {% endautoescape %}
+    </div>
+    {% endif %}
+</div>
+
+{% if albums %}
+
+<h3>Albums</h3>
+
+{{
+    include(
+        'Sources/Source/Source/list.html.twig',
+        {
+            sources: albums,
+        }
+    )
+}}
+
+{% endif %}
+
+{% endblock %}

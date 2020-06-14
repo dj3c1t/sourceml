@@ -1,0 +1,220 @@
+# -------------------------------------------------------------------
+#                                                             Import
+#
+
+sourceml_import_previous_version:
+    path:     /import/previous_version
+    controller: Sourceml\Controller\Sources\ImportController::previousVersionAction
+
+sourceml_do_import_previous_version:
+    path:     /doimport/previous_version
+    controller: Sourceml\Controller\Sources\ImportController::doImportAction
+
+
+# -------------------------------------------------------------------
+#                                                             Status
+#
+
+sourceml_status_url_open:
+    path:     /status/url_open
+    controller: Sourceml\Controller\Sources\StatusController::urlOpenAction
+
+# -------------------------------------------------------------------
+#                                                            Sources
+#
+
+# -------------------------------------------------------------------
+# source XML
+#
+
+source_xml:
+    path:     /source/{source}.xml
+    controller: Sourceml\Controller\Sources\Source\XmlController::sourceAction
+
+
+# -------------------------------------------------------------------
+# source authors
+#
+
+author_index:
+    path:     /author/index
+    controller: Sourceml\Controller\Sources\Source\AuthorController::indexAction
+
+author_view:
+    path:     /author/view/{author}
+    controller: Sourceml\Controller\Sources\Source\AuthorController::viewAction
+
+
+# -------------------------------------------------------------------
+# sources
+#
+
+source_index:
+    path:     /source/{sourceType}/index
+    controller: Sourceml\Controller\Sources\Source\SourceController::indexAction
+
+source_view:
+    path:     /source/{source}/view
+    controller: Sourceml\Controller\Sources\Source\SourceController::viewAction
+
+source_composition_sources:
+    path:     /source/composition/sources/{source}
+    controller: Sourceml\Controller\Sources\Source\SourceController::compositionSourcesAction
+
+source_source_derivations:
+    path:     /source/derivations/{source}
+    controller: Sourceml\Controller\Sources\Source\SourceController::sourceDerivationsAction
+
+source_toggle_auto_play_next_track:
+    path:     /source/toggle_auto_play_next_track
+    controller: Sourceml\Controller\Sources\Source\SourceController::toggleAutoPlayNextTrackAction
+
+# -------------------------------------------------------------------
+#                                                               Admin
+#
+
+sourceml_admin:
+    path:     /admin/sourceml
+    controller: Sourceml\Controller\Sources\Admin\IndexController::indexAction
+
+sourceml_admin_cache:
+    path:     /admin/sourceml/cache
+    controller: Sourceml\Controller\Sources\Admin\CacheController::indexAction
+
+sourceml_admin_config:
+    path:     /admin/sourceml/config
+    controller: Sourceml\Controller\Sources\Admin\ConfigController::indexAction
+
+sourceml_admin_cache_empty:
+    path:     /admin/sourceml/cache/empty
+    controller: Sourceml\Controller\Sources\Admin\CacheController::emptyAction
+
+sourceml_admin_licence_index:
+    path:     /admin/sourceml/licence/index
+    controller: Sourceml\Controller\Sources\Admin\LicenceController::indexAction
+
+sourceml_admin_licence_add:
+    path:     /admin/sourceml/licence/add
+    controller: Sourceml\Controller\Sources\Admin\LicenceController::addAction
+
+sourceml_admin_licence_edit:
+    path:     /admin/sourceml/licence/edit/{licence}
+    controller: Sourceml\Controller\Sources\Admin\LicenceController::editAction
+
+sourceml_admin_licence_delete:
+    path:     /admin/sourceml/licence/delete/{licence}
+    controller: Sourceml\Controller\Sources\Admin\LicenceController::deleteAction
+
+
+# -------------------------------------------------------------------
+#                                                             Account
+#
+
+
+# -------------------------------------------------------------------
+# account authors
+#
+
+account_author_index:
+    path:     /account/author/index
+    controller: Sourceml\Controller\Sources\Account\AuthorController::indexAction
+
+account_author_add:
+    path:     /account/author/add
+    controller: Sourceml\Controller\Sources\Account\AuthorController::addAction
+
+account_author_edit:
+    path:     /account/author/edit/{author}
+    controller: Sourceml\Controller\Sources\Account\AuthorController::editAction
+
+account_author_delete:
+    path:     /account/author/delete/{author}
+    controller: Sourceml\Controller\Sources\Account\AuthorController::deleteAction
+
+
+# -------------------------------------------------------------------
+# account sources
+#
+
+account_source_index:
+    path:     /account/{sourceType}/index
+    controller: Sourceml\Controller\Sources\Account\SourceController::indexAction
+
+account_source_order:
+    path:     /account/{sourceType}/order
+    controller: Sourceml\Controller\Sources\Account\SourceController::orderAction
+
+account_source_add:
+    path:     /account/{sourceType}/add
+    controller: Sourceml\Controller\Sources\Account\SourceController::addAction
+
+account_source_add_reference:
+    path:     /account/{sourceType}/add/reference
+    controller: Sourceml\Controller\Sources\Account\SourceController::addReferenceAction
+
+account_source_edit:
+    path:     /account/{sourceType}/edit/{source}
+    controller: Sourceml\Controller\Sources\Account\SourceController::editAction
+
+account_source_delete:
+    path:     /account/{sourceType}/delete/{source}
+    controller: Sourceml\Controller\Sources\Account\SourceController::deleteAction
+
+
+# -------------------------------------------------------------------
+# account source documents
+#
+
+account_source_document_add:
+    path:     /account/source/document/add
+    controller: Sourceml\Controller\Sources\Account\DocumentController::addAction
+
+account_source_document_save:
+    path:     /account/source/document/save
+    controller: Sourceml\Controller\Sources\Account\DocumentController::saveAction
+
+account_source_document_delete:
+    path:     /account/source/document/delete
+    controller: Sourceml\Controller\Sources\Account\DocumentController::deleteAction
+
+
+# -------------------------------------------------------------------
+# account source derivations
+#
+
+account_source_derivation_add:
+    path:     /account/source/derivation/add
+    controller: Sourceml\Controller\Sources\Account\DerivationController::addAction
+
+account_source_derivation_save:
+    path:     /account/source/derivation/save
+    controller: Sourceml\Controller\Sources\Account\DerivationController::saveAction
+
+account_source_derivation_delete:
+    path:     /account/source/derivation/delete
+    controller: Sourceml\Controller\Sources\Account\DerivationController::deleteAction
+
+
+# -------------------------------------------------------------------
+# account source authors
+#
+
+account_source_author_add:
+    path:     /account/source/author/add
+    controller: Sourceml\Controller\Sources\Account\SourceAuthorController::addAction
+
+account_source_author_delete:
+    path:     /account/source/author/delete/{sourceAuthor}
+    controller: Sourceml\Controller\Sources\Account\SourceAuthorController::deleteAction
+
+account_source_author_new:
+    path:     /account/source/author/new
+    controller: Sourceml\Controller\Sources\Account\SourceAuthorController::newAction
+
+account_source_author_accept:
+    path:     /account/source/author/accept/{sourceAuthor}
+    controller: Sourceml\Controller\Sources\Account\SourceAuthorController::acceptAction
+
+account_source_author_refuse:
+    path:     /account/source/author/refuse/{sourceAuthor}
+    controller: Sourceml\Controller\Sources\Account\SourceAuthorController::refuseAction

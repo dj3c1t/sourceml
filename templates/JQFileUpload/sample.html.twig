@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block head %}
+{{ parent() }}
+{{ include('JQFileUpload/head.html.twig') }}
+{% endblock %}
+
+{% block content_header %}
+{{ parent() }}
+<h1>Image de l'auteur d'id 3</h1>
+{% endblock %}
+
+{% block main %}
+
+<div class="row">
+    <div class="col-xs-12">
+
+        <!--
+            upload en Ajax géré par le service :
+            jq_file_upload.handler.sourceml_author_logo
+        -->
+        {{ include('JQFileUpload/Form/singleUpload.html.twig', {
+            handler: 'sourceml_author_logo',
+            id: 3
+        }) }}
+
+        <!-- input file sans ajax et sans balise form -->
+        {{ include('JQFileUpload/Form/singleUpload.html.twig', {
+            inputName: 'logo'
+        }) }}
+
+    </div>
+</div>
+
+{% endblock %}
+
+{% block body_end %}
+{{ parent() }}
+{{ include('JQFileUpload/body_end.html.twig') }}
+{% endblock %}

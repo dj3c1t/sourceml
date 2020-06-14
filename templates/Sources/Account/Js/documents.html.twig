@@ -1,0 +1,129 @@
+<script>
+$(document).ready(function() {
+
+    function init_source_document(source_document) {
+
+        source_document.find(".document_type").change(
+            function() {
+                if($(this).val() == "url") {
+                    source_document.find(".media_document").hide();
+                    source_document.find(".url_document").show();
+                }
+                else {
+                    source_document.find(".url_document").hide();
+                    source_document.find(".media_document").show();
+                }
+            }
+        );
+
+        source_document.find(".save_document").click(
+            function() {
+                var save_button = $(this);
+                save_button.find(".text").hide();
+                save_button.find(".loading").show();
+                var id = source_document.attr("data-id");
+                var document_type = source_document.find(".document_type").val();
+                var document_name = source_document.find(".document_name").val();
+                var document_url = source_document.find(".document_url").val();
+
+                $.post(
+                    "{{ path('account_source_document_save') }}",
+                    {
+                        id: id,
+                        document_type: document_type,
+                        document_name: document_name,
+                        document_url: document_url
+                    }
+                ).done(
+                    function(response) {
+                        save_button.find(".loading").hide();
+                        save_button.find(".text").show();
+                        if(response["error"]) {
+                            app_message("danger", source_document, response["error"]);
+                            return;
+                        }
+                        app_message("success", source_document, "Le document a été enregistré");
+                    }
+                );
+            }
+        );
+
+    }
+
+    function add_document(add_button) {
+        add_button.find(".text").hide();
+        add_button.find(".loading").show();
+        var id = add_button.attr("data-id-source");
+        $.post(
+            "{{ path('account_source_document_add') }}",
+            {
+                id: id,
+            }
+        ).done(
+            function(response) {
+                add_button.find(".loading").hide();
+                add_button.find(".text").show();
+                if(response["error"]) {
+                    app_message("danger", add_button.closest(".row"), response["error"]);
+                    return;
+                }
+                $("#documents").append(response["data"]["document_form"]);
+                source_document = $("#documents .source_document").last();
+                init_fileupload(
+                    source_document.find(".fileupload_form").attr("id"),
+                    "sourceml_source_document",
+                    response["data"]["document_id"],
+                    false,
+                    true
+                );
+                init_source_document($("#source_document_" + response["data"]["document_id"]));
+                init_bb_confirm(source_document.find(".delete_document"));
+            }
+        );
+    }
+
+    $(".source_document").each(
+        function() {
+            init_source_document($(this));
+        }
+    );
+
+    $("#add_document").click(
+        function() {
+            add_document($(this));
+        }
+    );
+
+});
+
+function delete_source_document(id) {
+    var source_document = $("#source_document_" + id);
+    var delete_button = source_document.find(".delete_document");
+    delete_button.find(".text").hide();
+    delete_button.find(".loading").show();
+    var id = source_document.attr("data-id");
+    $.post(
+        "{{ path('account_source_document_delete') }}",
+        {
+            id: id,
+        }
+    ).done(
+        function(response) {
+            delete_button.find(".loading").hide();
+            delete_button.find(".text").show();
+            if(response["error"]) {
+                app_message("danger", source_document, response["error"]);
+                return;
+            }
+            source_document.fadeOut(
+                400,
+                function() {
+                    source_document.remove();
+                }
+            );
+        }
+    );
+
+}
+
+</script>

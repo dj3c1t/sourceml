@@ -1,0 +1,153 @@
+{% extends 'Sources/base.html.twig' %}
+
+{% block content_header %}
+{{ parent() }}
+<h1>
+    Configuration générale de SourceML
+</h1>
+
+{% endblock %}
+
+{% block main %}
+{{ parent() }}
+
+<form id="config_form" action="{{ path('sourceml_admin_config') }}" method="post">
+    <input type="hidden" name="confirm_form" value="1" />
+{#
+    <h3>
+        Menu du header
+    </h3>
+
+    <div class="row">
+        <div class="col-xs-12">
+            <p>Ajouter un menu dans le header pour accéder à :</p>
+            <div class="form-group">
+                <input type="checkbox" id="header_menu_authors" name="header_menu_authors"{% if header_menu_authors %} checked{% endif %}/>
+                <label for="header_menu_authors">la liste des auteurs</label>
+            </div>
+            <div class="form-group">
+                <input type="checkbox" id="header_menu_albums" name="header_menu_albums"{% if header_menu_albums %} checked{% endif %}/>
+                <label for="header_menu_albums">la liste des albums</label>
+            </div>
+            <div class="form-group">
+                <input type="checkbox" id="header_menu_tracks" name="header_menu_tracks"{% if header_menu_tracks %} checked{% endif %}/>
+                <label for="header_menu_tracks">la liste des morceaux</label>
+            </div>
+            <div class="form-group">
+                <input type="checkbox" id="header_menu_sources" name="header_menu_sources"{% if header_menu_sources %} checked{% endif %}/>
+                <label for="header_menu_sources">la liste des pistes</label>
+            </div>
+        </div>
+    </div>
+#}
+    <h3>
+        Gestion du cache
+        <button class="btn btn-primary btn-help-toggle pull-right" data-helpcontent="#help" onclick="return false;">
+            Comment fonctionne le cache
+            <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
+        </button>
+    </h3>
+    
+    <div class="row help-content" id="help">
+        <div class="help alert alert-info">
+            <h4>SourceML enregistre les fichier XML des sources externes.</h4>
+            <p>
+                Pour chaque source (album, morceau ou piste), SourceML génère et rend disponible
+                un fichier XML, qui contient les informations de la source (son titre, son auteur,
+                sa licence, les urls de ses fichiers, etc). Ces fichiers XML sont automatiquement
+                mis à jour au fur et à mesure que vous ajoutez ou modifiez des morceaux, des album...
+            </p>
+            <p>
+                Mais vous pouvez aussi, dans SourceML, faire référence à d'autres sources. Par exemple
+                si vous publiez un remixe et que vous souhaitez indiquer qu'il dérive de tel morceau,
+                vous le faites en ajoutant, dans les sources de dérivation de votre remixe, l'URL du
+                fichier XML du morceau d'origine.
+            </p>
+            <p>
+                Ces fichiers XML externes, qui sont lus lorsque vous déclarez des relations
+                avec d'autres sources, sont mis en cache sur votre installation.
+            </p>
+            <p>
+                Par défaut, une fois téléchargé, le fichier XML d'une source externe n'est jamais
+                mis à jour. Vous pouvez ici vider le cache (ce qui provoquera une mise à jour de
+                tous les fichiers XML), ou le configurer pour donner une durée de validité à ses
+                fichiers (dans ce cas les fichiers XML seront mis à jour à chaque fois que leur
+                durée de présence dans le cache dépassera la durée de validité).
+            </p>
+            <p>
+                <strong>Note sur la migration</strong>
+            </p>
+            <p>
+                Si votre site à changé d'adresse (parce que vous avez
+                migré ou que d'une manière ou d'une autre l'URL pour y accéder a changé), vous
+                devriez vider le cache pour que les adresses soient mises à jour dans les fichiers
+                XML.
+            </p>
+        </div>
+    </div>
+    
+    <h4>Vider le cache</h4>
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="form-group">
+                <a class="btn btn-default bb_confirm"
+                   data-message="Vider le cache ?"
+                   href="{{ path('sourceml_admin_cache_empty') }}">
+                    <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>
+                    <span class="text">Vider le cache</span>
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    
+    <h4>Durée de validité des fichiers du cache</h4>
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="form-group">
+                <input type="checkbox" id="lifetime_enabled" name="lifetime_enabled"{% if lifetime_enabled %} checked{% endif %}/>
+                <label for="lifetime_enabled">Activer la durée de validité</label>
+            </div>
+            <div id="lifetime_input" class="form-group"{% if not lifetime_enabled %} style="display: none;"{% endif %}>
+                <label for="lifetime">Durée de validité</label><br />
+                <input type="number" name="lifetime" class="form-control" value="{{ lifetime }}" style="width: 8em; display: inline;" />
+                heures
+            </div>
+        </div>
+    </div>
+    
+    <h3>
+        Enregistrer la configuration
+    </h3>
+    
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Enregistrer</button>
+            </div>
+        </div>
+    </div>
+
+</form>
+
+{% endblock %}
+
+{% block body_end %}
+{{ parent() }}
+<script>
+$(document).ready(
+    function() {
+        $("#lifetime_enabled").change(
+            function() {
+                if($(this).is(":checked")) {
+                    $("#lifetime_input").slideDown();
+                }
+                else {
+                    $("#lifetime_input").slideUp();
+                }
+            }
+        );
+    }
+);
+</script>
+{% endblock %}
