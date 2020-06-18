@@ -9,8 +9,7 @@ login to your account and publish albums, songs and tracks.
 
 This v3 version of Sourceml is based on [Symfony](https://symfony.com/) 3.4
 
-[Older versions](http://www.sourceml.com/archives/) are available
-on [Sourceml's website](http://sourceml.com/).
+Older versions are available in [Sourceml archives](http://www.sourceml.com/archives/).
 
 ## Installation
 
@@ -69,3 +68,4 @@ Login with your username to access your account and add authors, albums and trac
 ## Read more about Sourceml
 
 * [Change Sourceml default's rendering](docs/change.ui.md)
+* [Sourceml's website (fr)](http://sourceml.com/)
