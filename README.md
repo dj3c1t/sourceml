@@ -67,5 +67,5 @@ Login with your username to access your account and add authors, albums and trac
 
 ## Read more about Sourceml
 
-* [Change Sourceml default's rendering](docs/change.ui.md)
+* [Change Sourceml's default rendering](docs/change.ui.md)
 * [Sourceml's website (fr)](http://sourceml.com/)

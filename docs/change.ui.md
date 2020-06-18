@@ -1,4 +1,4 @@
-# Change Sourceml default's rendering
+# Change Sourceml's default rendering
 
 [back to README](../README.md)
 
@@ -40,7 +40,7 @@ In the **templates** directory, twig files are stored in three main folders :
 | **JQFileUpload** | twig files for the upload forms |
 
 Each of them containing files and sub-folders (...) with names that hopfully will be
-helpfull.
+helpfull...
 
 A good start would be to take a look at the twig file that define de global HTML
 structure :
