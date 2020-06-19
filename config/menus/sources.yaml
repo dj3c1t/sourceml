@@ -50,6 +50,7 @@ sourceml_menus:
                     method: newSources
         sources:
             routes:
+                - install_success
                 - author_index
                 - author_view
                 - source_index
