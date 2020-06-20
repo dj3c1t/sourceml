@@ -42,7 +42,24 @@ In the **templates** directory, twig files are stored in three main folders :
 Each of them containing files and sub-folders (...) with names that hopfully will be
 helpfull...
 
-A good start would be to take a look at the twig file that define de global HTML
+A good start would be to take a look at the twig file that defines de global HTML
 structure :
 
 * templates/App/base.html.twig
+
+#### A more formal way to find twig files
+
+Sourceml is based on Symfony. A more formal way to find the twig file you're looking
+for would be to track the process leading to this file, following Symfony's mechanisms.
+
+A quick overview could be something like :
+
+1. Starting from the URL in the browser, you can find the corresponding *route*
+definition, in a .yaml file, in the **config/routes** directory.
+2. The *route* definition tells what *action* is called in which *controller*
+3. Looking in this *action*'s code, you will see which twig file is used.
+4. Then follow twig inclusions in the twig file if the HTML part you're looking for is
+not in it.
+
+But Symfony is also very well documented, and you will find plenty of explanations,
+with code samples, in the [Symfony documentation](https://symfony.com/doc/current/index.html).
