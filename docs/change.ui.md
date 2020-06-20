@@ -2,21 +2,107 @@
 
 [back to README](../README.md)
 
-## In short
+## Overview
 
-For now there is no theme management mechanism in Sourceml.
+There is a basic theme management mechanism in Sourceml.
 
-If you want to change CSS rules, or HTML code, you will have to make your changes
-in Sourceml files.
+If you want to change Sourceml's default rendering, you can copy the Sourceml file
+that you want to edit in your own theme folder and make your changes in this one.
+This way you will be able to upgrade your Sourceml installation without loosing
+your changes.
+
+## Make your own theme
+
+### Declare the theme in the application configuration
+
+Edit the **config/packages/app.yaml** file and change this line :
+
+```
+    sourceml_theme: null
+```
+
+To :
+
+```
+    sourceml_theme: my_theme
+```
+
+Choose your own theme name for *my_theme*
+
+#### Empty the configuration cache
+
+Delete the cache folder to force Sourceml to reload the configuration
+(you can safely remove the **dev** folder) :
+
+```
+var/cache/dev
+```
+
+### Change public files
+
+All public files in Sourceml (css, javascript, image files..) are stored in the
+**public** directory.
+
+Create a new folder with your theme's name in the **public/themes** directory :
+
+```
+public/themes/my_theme
+```
+
+Let's say you want to change this file :
+
+```
+public/app/css/style.css
+```
+
+Copy it to your theme's folder, keeping the orginal path and file name :
+
+```
+public/themes/my_theme/app/css/style.css
+```
+
+And that's it. Your file will be used instead of the Sourceml's default one.
+
+### Change template files
+
+Every piece of HTML code that Sourceml send to a browser is coming from a
+[Twig](https://twig.symfony.com/) template file. Those files are located in the
+**templates** folder, with a **.twig** extension.
+
+Create a new folder with your theme's name in the **templates/themes** directory :
+
+```
+templates/themes/my_theme
+```
+
+Let's say now you want to change this file :
+
+```
+templates/App/base.html.twig
+```
+
+Copy it to your theme's folder, keeping the orginal path and file name :
+
+```
+templates/themes/my_theme/App/base.html.twig
+```
+
+And this file will be used instead of the Sourceml's one.
+
+#### Empty the template cache
+
+If you don't see any change after editing your custom twig file, try to delete
+the cache folder (you can safely remove the **dev** folder) :
+
+```
+var/cache/dev
+```
 
 ## What Sourceml files are used in the default rendering ?
 
 ### Public files
 
-If you want to change public files, like css, javascript or image files, you will
-find all those files in the **public** directory.
-
-#### Css files
+Public files are relatively easy to locate, using a browser inspection tool.
 
 Regarding css rules, in most cases the file to edit will be one amoung the following :
 
@@ -25,11 +111,6 @@ Regarding css rules, in most cases the file to edit will be one amoung the follo
 * public/sources/css/sources.css
 
 ### Template files
-
-Every piece of HTML code that Sourceml send to a browser is coming from a
-[Twig](https://twig.symfony.com/) template file. Those files are located in the
-**templates** folder, with a **.twig** extension. If you want to change the HTML
-code, make your changes in the corresponding **.twig** file.
 
 In the **templates** directory, twig files are stored in three main folders :
 
