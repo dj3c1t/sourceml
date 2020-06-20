@@ -28,6 +28,26 @@ class RequestListener {
                 $im->redirectToInstall()
             );
         }
+        $this->initSourceml();
+    }
+
+    protected function initSourceml() {
+        $this->initThemeTwigPath();
+    }
+
+    protected function initThemeTwigPath() {
+        $twigLoader = $this->container->get('twig.loader');
+        $pathes = [];
+        if($theme = $this->container->getParameter('sourceml_theme')) {
+            $themeDir = $this->container->getParameter("twig.default_path")."/themes/".$theme;
+            if(is_dir($themeDir)) {
+                $pathes[] = $themeDir;
+            }
+        }
+        foreach($twigLoader->getPaths() as $path) {
+            $pathes[] = $path;
+        }
+        $twigLoader->setPaths($pathes);
     }
 
 }

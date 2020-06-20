@@ -4,6 +4,8 @@ parameters:
         route: author_index
     web_dir: public
     sourceml_run_installer: '%env(bool:SOURCEML_RUN_INSTALLER)%'
+    sourceml_theme: null
+    twig.extension.asset.class: Sourceml\Extension\AssetExtension
 
 services:
 
@@ -29,3 +31,10 @@ services:
             - { name: doctrine.event_subscriber, connection: default }
         calls:
             - [ setAnnotationReader, [ '@annotation_reader' ] ]
+
+    twig.extension.asset:
+        class: '%twig.extension.asset.class%'
+        public: false
+        arguments:
+            - '@assets.packages'
+            - '@service_container'
