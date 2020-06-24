@@ -68,5 +68,6 @@ message you sould now be able to login with your username, access your account a
 ## Read more about Sourceml
 
 * [A more detailed Sourceml presentation](docs/about.sourceml.md)
+* [Upgrade a Sourceml installation](docs/upgrade.md)
 * [Change Sourceml's default rendering](docs/change.ui.md)
 * [Sourceml's website (fr)](http://sourceml.com/)
