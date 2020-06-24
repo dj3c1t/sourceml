@@ -11,6 +11,8 @@ details all the steps to
 
 ## Upgrade a Sourceml 3 installation
 
+If your installation is already a version 3 of Sourceml, follow those steps :
+
 ##### Backup everything
 
 Dump the database and copy all site's files and folders in a safe place.
@@ -58,10 +60,9 @@ And you should have your Sourceml installation upgraded.
 
 ## Upgrade from version 2 to version 3
 
-You can follow the steps for the version 3, to uprade from version 2 to version 3, with
-few differences.
-
-There is no **.env** file in Sourceml 2. And there is no theme mechanism.
+If your installation is a version 2 of Sourceml, you can follow the steps above,
+but with few differences. In Sourceml 2 there is no **.env** file. And there
+is no theme mechanism.
 
 ### Edit the .env file
 
