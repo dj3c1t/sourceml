@@ -2,14 +2,12 @@
 
 [back to README](../README.md)
 
-This page describes how to upgrade from version 2 or 3 of Sourceml to the
-lastest version.
+This page describes how to upgrade from a version 2 or 3 of Sourceml to the
+lastest version. From version 1, there is a documentation on Sourceml's website that details all
+the steps to
+[upgrade from a version 1 to a version 2 of Sourceml](http://sourceml.com/index.php?id=23&e=pages/view/page) (fr).
 
-From version 1, there is a dedicated documentation on Sourceml's website that
-details all the steps to
-[upgrade from version 1 to version 2](http://sourceml.com/index.php?id=23&e=pages/view/page) (fr).
-
-## Upgrade a Sourceml 3 installation
+## Upgrade from a Sourceml 3 installation
 
 If your installation is already a version 3 of Sourceml, follow those steps :
 
@@ -58,17 +56,26 @@ templates/themes
 
 And you should have your Sourceml installation upgraded.
 
-## Upgrade from version 2 to version 3
+## Upgrade from Sourceml 2 to Sourceml 3
 
-If your installation is a version 2 of Sourceml, you can follow the steps above,
-but with few differences. In Sourceml 2 there is no **.env** file. And there
-is no theme mechanism.
+If your installation is a version 2 of Sourceml, you can follow the steps above
+to upgrade to a version 3, but with two differences, because neither Sourceml 2
+have a theme mechanism, nor have a **.env** file.
 
-### Edit the .env file
+### About themes
 
-There is no **.env** file in version 2. So you will have to edit the one in the
-new installation, and change two things in it. The database connection
-informations and the Sourceml installer status.
+As there is no theme mecanism in Sourceml 2, all changes made on Sourceml's
+default rendering will be lost (unless you adapt them into a
+[new theme](change.ui.md)).
+
+### About the .env file
+
+In Sourceml 2, there is no **.env** file. So you will have to edit the default
+one provided by Sourceml 3.
+
+This file is edited by Sourceml's installer, and contains the database
+connection informations and a parameter that says weither or not the installer
+has to be run.
 
 #### The database connection informations
 
@@ -89,24 +96,25 @@ parameters:
     database_password: Sc7gWDUoYkTQQjdK
 ```
 
-Edit the new **.env** file, and change this line :
+In the new **.env** file, find this line :
 
 ```
 DATABASE_URL=mysql://db_user:db_password@localhost/db_name
 ```
 
-Change **db_user**, **db_password**, **localhost** and **db_name** with the
-informations from the **parameters.yml** file.
+And change **db_user**, **db_password**, **localhost** and **db_name** with the
+informations found in the **parameters.yml** file.
 
-With the values from the above sample, that would be :
+With the above values, that would be :
 
 ```
 DATABASE_URL=mysql://sourceml_db_user:Sc7gWDUoYkTQQjdK@localhost/sourceml_db_name
 ```
 #### The installer status
 
-Finally disable the Sourceml installer, to skip the install page. To do so edit
-the **.env** file and change (at the end of the file) :
+Finally disable the Sourceml installer, to skip the install page.
+
+At the end of the **.env** file, change :
 
 ```
 SOURCEML_RUN_INSTALLER=true
@@ -117,11 +125,13 @@ To :
 ```
 SOURCEML_RUN_INSTALLER=false
 ```
-### About themes
 
-Regarding themes and adjustments made on a version 2 of Sourceml, there is
-nothing like a migration tool to get them working with a version 3.
+### Finish Sourceml's upgrade
 
-However the code of versions 2 and 3 of Sourceml are very similar, and some
-changes made on a v2 installation may need only little adjustments to work with
-a v3. In short... HTML code haven't changed but pathes have changed.
+Don't forget to restore your **medias** folder :
+
+```
+public/medias
+```
+
+And you should have your installation upgraded from Sourceml 2 to Sourceml 3.
