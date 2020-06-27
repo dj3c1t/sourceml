@@ -40,20 +40,20 @@ composer install
 
 ### Configure the server host
 
-Configure a serveur host with the **public** directory (inside the **sourceml**
-folder) as the document root.
+Sourceml follows Symfony's code structure, which assumes that the document root
+of the server is the **public** directory. All Sourceml's files have to be
+installed on the server, but only the **public** directory should be accessible
+via HTTP.
+
+If for some reason this configuration is not possible, the document root can be
+the **sourceml** directory, and you will have Sourceml available with a
+**public/** prefix in the URI. But this is a potential **serious security
+risk**, because the **.env** file contains the database connection informations
+and therefore **MUST NOT be public**.
 
 > :warning:
->
-> The **.env** file will contain the database connection informations
-> and **MUST NOT be public**
->
 
-
-If for some reason the server document root is set to the **sourceml** folder,
-Sourceml will still work, with a **/public** prefix in the URI.
-
-#### But make sure the **.env** file isn't accessible from a browser.
+ Make sure you can't access the **.env** file from a browser.
 
 ### Run the installer
 
