@@ -19,7 +19,7 @@ for remixes and other derivative works.
 
 This is one of the two main ideas behind Sourceml. The other one is about
 making a publishing tool available for anyone who wishes to set a personnal
-music website, or a plateform with multiple autors.
+music website, or a plateform with multiple authors.
 
 ## Sharing music with separated tracks
 
