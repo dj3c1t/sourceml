@@ -41,7 +41,7 @@ public/medias
 
 ##### Restore the themes
 
-Finally, and if some [themes](docs/change.ui.md) have been added, restore the
+Finally, and if some [themes](change.ui.md) have been added, restore the
 **themes** folders :
 
 ```
