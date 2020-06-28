@@ -70,12 +70,12 @@ default rendering will be lost (unless you adapt them into a
 
 ### About the .env file
 
-In Sourceml 2, there is no **.env** file. So you will have to edit the default
-one provided by Sourceml 3.
+This file is edited by Sourceml during the installation process and contains,
+among other things, the database connection informations and a parameter that
+says weither or not the installer has to be run.
 
-This file is edited by Sourceml's installer, and contains the database
-connection informations and a parameter that says weither or not the installer
-has to be run.
+As there is no **.env** file in Sourceml 2, you will have to edit the default
+one provided by Sourceml 3.
 
 #### The database connection informations
 
