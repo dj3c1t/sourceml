@@ -92,7 +92,10 @@ class UploadManager {
                     throw new \Exception("not post method found in upload service");
                 }
                 $files = $this->jQUploadHandler->post();
-                if(($file = reset($files)) && !isset($file->error)) {
+                if($file = reset($files)) {
+                    if(isset($file->error)) {
+                        throw new \Exception($file->error);
+                    }
                     $media = $this->getMedia($file);
                     $media = $this->handler->post($media);
                     if($media->getError()) {
