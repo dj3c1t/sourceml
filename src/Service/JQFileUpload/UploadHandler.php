@@ -356,8 +356,13 @@ class UploadHandler
     }
 
     function get_config_bytes($val) {
-        $val = intval(trim($val));
-        $last = strtolower($val[strlen($val)-1]);
+        $val = trim($val);
+        preg_match("/([0-9]+)([a-zA-Z])?/", $val, $matches);
+        $val = intval($matches[1]);
+        $last = "";
+        if(isset($matches[2])) {
+            $last = strtolower($matches[2]);
+        }
         switch($last) {
             case 'g':
                 $val *= 1024;
