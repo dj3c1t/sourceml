@@ -357,21 +357,23 @@ class UploadHandler
 
     function get_config_bytes($val) {
         $val = trim($val);
-        preg_match("/([0-9]+)([a-zA-Z])?/", $val, $matches);
-        $val = intval($matches[1]);
-        $last = "";
-        if(isset($matches[2])) {
-            $last = strtolower($matches[2]);
+        $bytes = 0;
+        if(preg_match("/([0-9]+)([a-zA-Z])?/", $val, $matches)) {
+            $bytes = intval($matches[1]);
+            $unit = "";
+            if(isset($matches[2])) {
+                $unit = strtolower($matches[2]);
+            }
+            switch($unit) {
+                case 'g':
+                    $bytes *= 1024;
+                case 'm':
+                    $bytes *= 1024;
+                case 'k':
+                    $bytes *= 1024;
+            }
         }
-        switch($last) {
-            case 'g':
-                $val *= 1024;
-            case 'm':
-                $val *= 1024;
-            case 'k':
-                $val *= 1024;
-        }
-        return $this->fix_integer_overflow($val);
+        return $this->fix_integer_overflow($bytes);
     }
 
     protected function validate($uploaded_file, $file, $error, $index) {
