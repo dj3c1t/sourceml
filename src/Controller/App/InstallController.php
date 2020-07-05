@@ -45,6 +45,7 @@ class InstallController extends Controller {
                 $im->createAdminUser();
                 $im->saveDatabaseParameters();
                 $im->disableInstaller();
+                $im->setAppEnv("prod");
                 $im->clearAppCache();
                 return $this->redirect($this->generateUrl('install_success'));
             }

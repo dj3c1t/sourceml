@@ -269,6 +269,12 @@ class InstallManager {
         ]);
     }
 
+    public function setAppEnv($env) {
+        $this->writeEnvParams([
+            "APP_ENV" => $env,
+        ]);
+    }
+
     protected function getDatabaseUrl() {
         return "mysql://".$this->parameters['database_name']
                      .":".$this->parameters['database_pass']
