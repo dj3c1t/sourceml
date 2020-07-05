@@ -112,7 +112,7 @@ DATABASE_URL=mysql://sourceml_db_user:Sc7gWDUoYkTQQjdK@localhost/sourceml_db_nam
 ```
 #### The installer status
 
-Finally disable the Sourceml installer, to skip the install page.
+Disable the Sourceml installer, to skip the install page.
 
 At the end of the **.env** file, change :
 
@@ -124,6 +124,26 @@ To :
 
 ```
 SOURCEML_RUN_INSTALLER=false
+```
+
+#### The "prod" environment
+
+Finally change the **APP_ENV** variable from **dev** to **prod**.
+
+Sourceml will work in **dev** environment, but it will display a debug bar at
+the bottom of each page. There are also few other differences with the **prod**
+environment, regarding caching and logging policy.
+
+In the **.env** file, change :
+
+```
+APP_ENV=dev
+```
+
+To :
+
+```
+APP_ENV=prod
 ```
 
 ### Finish Sourceml's upgrade
