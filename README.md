@@ -15,11 +15,11 @@ Older versions are available in [Sourceml archives](http://www.sourceml.com/arch
 
 ### Requirements
 
-* php >= 7.0.8
-* php modules : php-xml, php-gd
-* For waveforms generation, php will try to call the [sox](http://sox.sourceforge.net)
-utility via a system command. If it fails, audio players will still be available,
-but without waveforms.
+* **php >= 7.0.8**
+* php modules : **php-xml**, **php-gd**
+* For waveforms generation, Sourceml's php code will try to call the
+**[sox](http://sox.sourceforge.net)** utility via a system command. If it fails,
+audio players will still be available, but without waveforms.
 
 ### Get a copy of the repository
 
