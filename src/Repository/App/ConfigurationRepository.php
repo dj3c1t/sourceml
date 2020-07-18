@@ -9,7 +9,7 @@ use Sourceml\Entity\App\Configuration;
 class ConfigurationRepository extends EntityRepository {
 
     public function setConfiguration($name, $value) {
-        if(!($configuration = $this->findOneByName($name))) {
+        if(!($configuration = $this->findOneBy(["name" => $name]))) {
             $configuration = new Configuration();
             $configuration->setName($name);
         }
@@ -18,7 +18,7 @@ class ConfigurationRepository extends EntityRepository {
     }
 
     public function getConfigurationByName($name) {
-        if($configuration = $this->findOneByName($name)) {
+        if($configuration = $this->findOneBy(['name' => $name])) {
             return $configuration->getValue();
         }
         return null;

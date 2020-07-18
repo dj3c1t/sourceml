@@ -12,6 +12,7 @@ use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Core\Encoder\EncoderFactory;
 
 use Doctrine\ORM\Tools\Setup;
 use Doctrine\ORM\EntityManager;
@@ -23,14 +24,17 @@ class InstallManager {
 
     protected $container;
 
+    protected $encoderFactory;
+
     protected $parameters;
 
     protected $rootDir;
 
     protected $webDir;
 
-    public function __construct(Container $container) {
+    public function __construct(Container $container, EncoderFactory $encoderFactory) {
         $this->container = $container;
+        $this->encoderFactory = $encoderFactory;
         $this->rootDir = dirname($this->container->get('kernel')->getRootDir());
         $this->webDir = $this->container->getParameter('web_dir');
         $this->parameters = array(
@@ -155,6 +159,7 @@ class InstallManager {
             new ArrayInput(
                 array(
                     'command' => 'doctrine:fixtures:load',
+                    '--append' => true
                 )
             ),
             new NullOutput()
@@ -224,7 +229,7 @@ class InstallManager {
     public function createAdminUser() {
         $em = $this->container->get('doctrine')->getManager();
         $roleRepo = $em->getRepository(\Sourceml\Entity\App\Role::class);
-        if(!($adminRole = $roleRepo->findOneByName('admin'))) {
+        if(!($adminRole = $roleRepo->findOneBy(["name" => 'admin']))) {
             throw new \Exception("Impossible de trouver le role admin");
         }
         $user = new User();
@@ -233,8 +238,7 @@ class InstallManager {
         $user->setEmail($this->parameters['admin_email']);
         $user->setPassword($this->parameters['admin_pass']);
         $user->setSalt("");
-        $factory = $this->container->get('security.encoder_factory');
-        $encoder = $factory->getEncoder($user);
+        $encoder = $this->encoderFactory->getEncoder($user);
         $user->setPassword($encoder->encodePassword($user->getPassword(), $user->getSalt()));
         $user->addRole($adminRole);
         $em->persist($user);

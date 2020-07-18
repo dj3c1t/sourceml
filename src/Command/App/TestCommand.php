@@ -2,15 +2,13 @@
 
 namespace Sourceml\Command\App;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class TestCommand extends ContainerAwareCommand {
-
-    private $container;
+class TestCommand extends Command {
 
     protected function configure() {
         $this
@@ -33,7 +31,6 @@ class TestCommand extends ContainerAwareCommand {
     }
 
     protected function execute(InputInterface $input, OutputInterface $output) {
-        $this->container = $this->getApplication()->getKernel()->getContainer();
     }
 
 }

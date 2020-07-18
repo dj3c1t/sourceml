@@ -5,20 +5,19 @@ parameters:
     web_dir: public
     sourceml_run_installer: '%env(bool:SOURCEML_RUN_INSTALLER)%'
     sourceml_theme: null
-    twig.extension.asset.class: Sourceml\Extension\AssetExtension
 
 services:
 
     sourceml_app.request_listener:
         class: Sourceml\Service\App\Listener\RequestListener
-        arguments: ['@service_container']
+        arguments: ['@service_container', '@twig.loader']
         tags:
             - { name: kernel.event_listener, event: kernel.request }
 
     sourceml_app.install_manager:
         public: true
         class: Sourceml\Service\App\InstallManager
-        arguments: ['@service_container']
+        arguments: ['@service_container', '@security.encoder_factory']
 
     sourceml_app.menus:
         public: true
@@ -32,9 +31,65 @@ services:
         calls:
             - [ setAnnotationReader, [ '@annotation_reader' ] ]
 
-    twig.extension.asset:
-        class: '%twig.extension.asset.class%'
+    twig.extension.assets:
+        class: Sourceml\Extension\AssetExtension
         public: false
         arguments:
             - '@assets.packages'
             - '@service_container'
+
+    # ---------------------------------------------------------- controllers
+
+    Sourceml\Controller\App\Account\IndexController:
+        calls:
+            - [setContainer, ['@service_container']]
+        tags: ['controller.service_arguments']
+
+    Sourceml\Controller\App\Account\ConfigurationController:
+        calls:
+            - [setContainer, ['@service_container']]
+        tags: ['controller.service_arguments']
+        arguments:
+            - '@security.encoder_factory'
+
+    Sourceml\Controller\App\View\ColonneController:
+        calls:
+            - [setContainer, ['@service_container']]
+        tags: ['controller.service_arguments']
+
+    Sourceml\Controller\App\View\HeaderController:
+        calls:
+            - [setContainer, ['@service_container']]
+        tags: ['controller.service_arguments']
+
+    Sourceml\Controller\App\SecurityController:
+        calls:
+            - [setContainer, ['@service_container']]
+        tags: ['controller.service_arguments']
+
+    Sourceml\Controller\App\DefaultController:
+        calls:
+            - [setContainer, ['@service_container']]
+        tags: ['controller.service_arguments']
+
+    Sourceml\Controller\App\Admin\IndexController:
+        calls:
+            - [setContainer, ['@service_container']]
+        tags: ['controller.service_arguments']
+
+    Sourceml\Controller\App\Admin\ConfigurationController:
+        calls:
+            - [setContainer, ['@service_container']]
+        tags: ['controller.service_arguments']
+
+    Sourceml\Controller\App\Admin\UserController:
+        calls:
+            - [setContainer, ['@service_container']]
+        tags: ['controller.service_arguments']
+        arguments:
+            - '@security.encoder_factory'
+
+    Sourceml\Controller\App\InstallController:
+        calls:
+            - [setContainer, ['@service_container']]
+        tags: ['controller.service_arguments']

@@ -366,7 +366,7 @@ class SourceManager {
         if($source->getId()) {
             $em = $this->container->get('doctrine')->getManager();
             $derivationRepo = $em->getRepository(DerivationSource::class);
-            $derivationSources = $derivationRepo->findByUrl($source->getXmlUrl());
+            $derivationSources = $derivationRepo->findBy(["url" => $source->getXmlUrl()]);
             foreach($derivationSources as $derivationSource) {
                 $derivations[] = $derivationSource->getSource();
             }

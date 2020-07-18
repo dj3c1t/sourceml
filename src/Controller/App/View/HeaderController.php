@@ -2,7 +2,7 @@
 
 namespace Sourceml\Controller\App\View;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController as Controller;
 use Sourceml\Entity\App\Configuration;
 use Sourceml\Repository\App\DefaultConfiguration;
 

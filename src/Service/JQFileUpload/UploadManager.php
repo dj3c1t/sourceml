@@ -382,7 +382,7 @@ class UploadManager {
         $fileName = $_GET["file"];
         $em = $this->container->get('doctrine')->getManager();
         $mediaRepo = $em->getRepository(Media::class);
-        if($media = $mediaRepo->findOneByName($this->mediaDir."/".$fileName)) {
+        if($media = $mediaRepo->findOneBy(["name" => $this->mediaDir."/".$fileName])) {
             return $media;
         }
         return null;

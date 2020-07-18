@@ -2,7 +2,7 @@
 
 namespace Sourceml\Controller\App;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController as Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -39,11 +39,11 @@ class InstallController extends Controller {
             try {
                 $im->setParameters($request);
                 $im->connectToDatabase();
+                $im->saveDatabaseParameters();
                 $im->installDatabase();
                 $im->setSiteTitle();
                 $im->setInstallInfos();
                 $im->createAdminUser();
-                $im->saveDatabaseParameters();
                 $im->disableInstaller();
                 $im->setAppEnv("prod");
                 $im->clearAppCache();

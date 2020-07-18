@@ -2,7 +2,7 @@
 
 namespace Sourceml\Controller\App\Admin;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController as Controller;
 use Symfony\Component\HttpFoundation\Request;
 
 class ConfigurationController extends Controller {

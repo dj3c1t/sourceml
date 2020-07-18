@@ -2,7 +2,7 @@
 
 namespace Sourceml\Controller\App;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController as Controller;
 
 class DefaultController extends Controller {
 

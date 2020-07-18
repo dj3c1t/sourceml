@@ -75,7 +75,79 @@ services:
     sourceml.import_previous_version:
         public: true
         class: Sourceml\Service\Sources\ImportPreviousVersion
-        arguments: ['@service_container']
+        arguments: ['@service_container', '@security.encoder_factory']
+
+    # ---------------------------------------------------------- controllers
+
+    Sourceml\Controller\Sources\Account\DerivationController:
+        calls:
+            - [setContainer, ['@service_container']]
+        tags: ['controller.service_arguments']
+
+    Sourceml\Controller\Sources\Account\AuthorController:
+        calls:
+            - [setContainer, ['@service_container']]
+        tags: ['controller.service_arguments']
+
+    Sourceml\Controller\Sources\Account\DocumentController:
+        calls:
+            - [setContainer, ['@service_container']]
+        tags: ['controller.service_arguments']
+
+    Sourceml\Controller\Sources\Account\SourceController:
+        calls:
+            - [setContainer, ['@service_container']]
+        tags: ['controller.service_arguments']
+
+    Sourceml\Controller\Sources\Account\SourceAuthorController:
+        calls:
+            - [setContainer, ['@service_container']]
+        tags: ['controller.service_arguments']
+
+    Sourceml\Controller\Sources\ImportController:
+        calls:
+            - [setContainer, ['@service_container']]
+        tags: ['controller.service_arguments']
+
+    Sourceml\Controller\Sources\Admin\IndexController:
+        calls:
+            - [setContainer, ['@service_container']]
+        tags: ['controller.service_arguments']
+
+    Sourceml\Controller\Sources\Admin\CacheController:
+        calls:
+            - [setContainer, ['@service_container']]
+        tags: ['controller.service_arguments']
+
+    Sourceml\Controller\Sources\Admin\LicenceController:
+        calls:
+            - [setContainer, ['@service_container']]
+        tags: ['controller.service_arguments']
+
+    Sourceml\Controller\Sources\Admin\ConfigController:
+        calls:
+            - [setContainer, ['@service_container']]
+        tags: ['controller.service_arguments']
+
+    Sourceml\Controller\Sources\StatusController:
+        calls:
+            - [setContainer, ['@service_container']]
+        tags: ['controller.service_arguments']
+
+    Sourceml\Controller\Sources\Source\AuthorController:
+        calls:
+            - [setContainer, ['@service_container']]
+        tags: ['controller.service_arguments']
+
+    Sourceml\Controller\Sources\Source\XmlController:
+        calls:
+            - [setContainer, ['@service_container']]
+        tags: ['controller.service_arguments']
+
+    Sourceml\Controller\Sources\Source\SourceController:
+        calls:
+            - [setContainer, ['@service_container']]
+        tags: ['controller.service_arguments']
 
 stfalcon_tinymce:
     include_jquery: false

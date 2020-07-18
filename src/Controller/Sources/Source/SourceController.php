@@ -2,7 +2,7 @@
 
 namespace Sourceml\Controller\Sources\Source;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController as Controller;
 use Symfony\Component\HttpFoundation\Request;
 
 use Sourceml\Http\REST\RestResponse;

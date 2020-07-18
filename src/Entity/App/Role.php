@@ -3,7 +3,7 @@
 namespace Sourceml\Entity\App;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Security\Core\Role\Role as SymfonyRole;
+use Symfony\Component\Security\Core\Role\RoleHierarchy as SymfonyRole;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**

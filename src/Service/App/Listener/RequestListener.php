@@ -3,19 +3,23 @@
 namespace Sourceml\Service\App\Listener;
 
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface as Container;
+use Twig\Loader\FilesystemLoader;
 
 class RequestListener {
 
     private $container;
+    private $twigLoader;
 
-    public function __construct(Container $container) {
+    public function __construct(Container $container, FilesystemLoader $twigLoader) {
         $this->container = $container;
+        $this->twigLoader = $twigLoader;
     }
 
-    public function onKernelRequest(GetResponseEvent $event) {
+    public function onKernelRequest(RequestEvent $event) {
         $im = $this->container->get('sourceml_app.install_manager');
         if(!$im->isNotWritableRequest() && $im->checkWriteAccess()) {
             $event->setResponse(
@@ -36,7 +40,6 @@ class RequestListener {
     }
 
     protected function initThemeTwigPath() {
-        $twigLoader = $this->container->get('twig.loader');
         $pathes = [];
         if($theme = $this->container->getParameter('sourceml_theme')) {
             $themeDir = $this->container->getParameter("twig.default_path")."/themes/".$theme;
@@ -44,10 +47,10 @@ class RequestListener {
                 $pathes[] = $themeDir;
             }
         }
-        foreach($twigLoader->getPaths() as $path) {
+        foreach($this->twigLoader->getPaths() as $path) {
             $pathes[] = $path;
         }
-        $twigLoader->setPaths($pathes);
+        $this->twigLoader->setPaths($pathes);
     }
 
 }

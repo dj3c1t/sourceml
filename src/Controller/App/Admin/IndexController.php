@@ -2,7 +2,7 @@
 
 namespace Sourceml\Controller\App\Admin;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController as Controller;
 
 class IndexController extends Controller {
 

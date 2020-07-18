@@ -14,3 +14,15 @@ services:
         tags:
             - { name: doctrine.event_listener, event: postLoad }
         arguments: ['@service_container']
+
+    # ---------------------------------------------------------- controllers
+
+    Sourceml\Controller\JQFileUpload\ServerController:
+        calls:
+            - [setContainer, ['@service_container']]
+        tags: ['controller.service_arguments']
+
+    Sourceml\Controller\JQFileUpload\TestController:
+        calls:
+            - [setContainer, ['@service_container']]
+        tags: ['controller.service_arguments']

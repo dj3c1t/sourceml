@@ -10,6 +10,7 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Security\Core\Encoder\EncoderFactory;
 
 use Sourceml\Entity\App\User;
 use Sourceml\Entity\App\Role;
@@ -33,9 +34,11 @@ class ImportPreviousVersion {
     protected $logs;
     protected $webDir;
     protected $webUri;
+    protected $encoderFactory;
 
-    public function __construct(Container $container) {
+    public function __construct(Container $container, EncoderFactory $encoderFactory) {
         $this->container = $container;
+        $this->encoderFactory = $encoderFactory;
     }
 
     // ----------------------------------------------------------------------
@@ -149,9 +152,8 @@ class ImportPreviousVersion {
         $em = $this->container->get('doctrine')->getManager();
         $userRepo = $em->getRepository(User::class);
         $roleRepo = $em->getRepository(Role::class);
-        $adminRole = $roleRepo->findOneByRole("ROLE_ADMIN");
-        $userRole = $roleRepo->findOneByRole("ROLE_USER");
-        $encoder_factory = $this->container->get('security.encoder_factory');
+        $adminRole = $roleRepo->findOneBy(["role" => "ROLE_ADMIN"]);
+        $userRole = $roleRepo->findOneBy(["role" => "ROLE_USER"]);
         if(($users = $this->mw_data->users()) === false) {
             $this->error("can't load users from mw_data");
         }
@@ -159,12 +161,12 @@ class ImportPreviousVersion {
         $mw_emails = array();
         foreach($users['list'] as $mw_user) {
             $this->log("creating new user for ".$mw_user["login"]);
-            if(isset($mw_users[$mw_user["login"]]) || $userRepo->findOneByUsername($mw_user["login"])) {
+            if(isset($mw_users[$mw_user["login"]]) || $userRepo->findOneBy(["username" => $mw_user["login"]])) {
                 $this->log("user ".$mw_user["login"]." already exists, skiping this one");
                 continue;
             }
             $mw_users[$mw_user["login"]] = true;
-            if(isset($mw_emails[$mw_user["email"]]) || $userRepo->findOneByEmail($mw_user["email"])) {
+            if(isset($mw_emails[$mw_user["email"]]) || $userRepo->findOneBy(["email" => $mw_user["email"]])) {
                 $this->log("user ".$mw_user["login"]." has an email (".$mw_user["email"].") already used by another user");
                 $this->log("please set a different email per user before importing");
                 $this->error("can't import users");
@@ -178,7 +180,7 @@ class ImportPreviousVersion {
             $user->setSalt("");
             $newPassword = substr(md5(rand()), 0, 8);
             $user->setPassword(
-                $encoder_factory->getEncoder($user)->encodePassword(
+                $this->encoderFactory->getEncoder($user)->encodePassword(
                     $newPassword,
                     $user->getSalt()
                 )

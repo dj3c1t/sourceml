@@ -2,13 +2,20 @@
 
 namespace Sourceml\Controller\App\Account;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController as Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\FormError;
+use Symfony\Component\Security\Core\Encoder\EncoderFactory;
 
 use Sourceml\Form\App\Type\UserType;
 
 class ConfigurationController extends Controller {
+
+    protected $encoderFactory;
+
+    public function __construct(EncoderFactory $encoderFactory) {
+        $this->encoderFactory = $encoderFactory;
+    }
 
     public function indexAction(Request $request) {
         $user = $this->getUser();
@@ -25,9 +32,8 @@ class ConfigurationController extends Controller {
             if($form->isValid()) {
                 if($form->get('changePassword')->getData()) {
                     if($user->getPassword()) {
-                        $encoder = $this->get('security.encoder_factory')->getEncoder($user);
                         $user->setPassword(
-                            $encoder->encodePassword($user->getPassword(), $user->getSalt())
+                            $this->encoderFactory->getEncoder($user)->encodePassword($user->getPassword(), $user->getSalt())
                         );
                     }
                     else {

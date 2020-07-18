@@ -2,7 +2,7 @@
 
 namespace Sourceml\Controller\Sources\Account;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController as Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
@@ -131,7 +131,7 @@ class SourceController extends Controller {
     public function addAction(Request $request, $sourceType) {
         $em = $this->get('doctrine')->getManager();
         $authorRepo = $em->getRepository(Author::class);
-        if(!$authorRepo->findByUser($this->getUser())) {
+        if(!$authorRepo->findBy(["user" => $this->getUser()])) {
             $this->get('session')->getFlashBag()->add(
                 "info",
                 "Vous devez ajouter un auteur avant d'ajouter une source"
@@ -199,7 +199,7 @@ class SourceController extends Controller {
     public function addReferenceAction(Request $request, $sourceType) {
         $em = $this->get('doctrine')->getManager();
         $authorRepo = $em->getRepository(Author::class);
-        if(!$authorRepo->findByUser($this->getUser())) {
+        if(!$authorRepo->findBy(["user" => $this->getUser()])) {
             $this->get('session')->getFlashBag()->add(
                 "info",
                 "Vous devez ajouter un auteur avant d'ajouter une source"

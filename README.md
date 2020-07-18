@@ -7,15 +7,13 @@ A Php/MySql music sharing CMS
 Sourceml is a music sharing web application. Install Sourceml on a web server,
 login to your account and publish albums, songs and tracks.
 
-This v3 version of Sourceml is based on [Symfony](https://symfony.com/) 3.4
-
-Older versions are available in [Sourceml archives](http://www.sourceml.com/archives/).
+Sourceml is a Php/Mysql web application based on [Symfony](https://symfony.com/).
 
 ## Installation
 
 ### Requirements
 
-* **php >= 7.0.8**
+* **php >= 7.2.5**
 * php modules : **php-xml**, **php-gd**
 * For waveforms generation, Sourceml's php code will try to call the
 **[sox](http://sox.sourceforge.net)** utility via a system command. If it fails,

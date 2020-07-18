@@ -2,14 +2,21 @@
 
 namespace Sourceml\Controller\App\Admin;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController as Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\FormError;
+use Symfony\Component\Security\Core\Encoder\EncoderFactory;
 
 use Sourceml\Entity\App\User;
 use Sourceml\Form\App\Type\UserType;
 
 class UserController extends Controller {
+
+    protected $encoderFactory;
+
+    public function __construct(EncoderFactory $encoderFactory) {
+        $this->encoderFactory = $encoderFactory;
+    }
 
     public function indexAction(Request $request) {
         $em = $this->get('doctrine')->getManager();
@@ -45,8 +52,7 @@ class UserController extends Controller {
         if($form->isSubmitted()) {
             if($form->isValid()) {
                 try {
-                    $factory = $this->get('security.encoder_factory');
-                    $encoder = $factory->getEncoder($user);
+                    $encoder = $this->encoderFactory->getEncoder($user);
                     $user->setPassword($encoder->encodePassword($user->getPassword(), $user->getSalt()));
                     $user->setSalt("");
                     $em->persist($user);
@@ -82,7 +88,7 @@ class UserController extends Controller {
             if($form->isValid()) {
                 if($form->get('changePassword')->getData()) {
                     if($user->getPassword()) {
-                        $encoder = $this->get('security.encoder_factory')->getEncoder($user);
+                        $encoder = $this->encoderFactory->getEncoder($user);
                         $user->setPassword(
                             $encoder->encodePassword($user->getPassword(), $user->getSalt())
                         );

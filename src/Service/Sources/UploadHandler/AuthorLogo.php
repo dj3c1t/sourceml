@@ -13,7 +13,7 @@ class AuthorLogo {
     private $em;
     private $allowedFiles;
 
-    public function __construct(Container $container, $allowedFiles) {
+    public function __construct(Container $container, string $allowedFiles) {
         $this->container = $container;
         $this->allowedFiles = explode(",", $allowedFiles);
         foreach($this->allowedFiles as $i => $extension) {

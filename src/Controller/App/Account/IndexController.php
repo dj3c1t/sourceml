@@ -2,7 +2,7 @@
 
 namespace Sourceml\Controller\App\Account;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController as Controller;
 
 class IndexController extends Controller {
 
